@@ -36,7 +36,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 0,
+				day: [0],
 				week: 1,
 				hours: [
 					{
@@ -58,7 +58,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 1,
+				day: [1],
 				week: 1,
 				hours: [
 					{
@@ -73,7 +73,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 1,
+				day: [1],
 				week: 2,
 				hours: [
 					{
@@ -111,7 +111,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 2,
+				day: [2],
 				week: 1,
 				hours: [
 					{
@@ -133,7 +133,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 0,
+				day: [0],
 				week: 2,
 				hours: [
 					{
@@ -155,7 +155,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 3,
+				day: [3],
 				week: 2,
 				hours: [
 					{
@@ -193,7 +193,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 4,
+				day: [4],
 				week: 2,
 				hours: [
 					{
@@ -215,7 +215,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 4,
+				day: [4],
 				week: 2,
 				hours: [
 					{
@@ -237,7 +237,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 5,
+				day: [5],
 				week: 1,
 				hours: [
 					{
@@ -278,7 +278,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Лекция',
-				day: 0,
+				day: [0],
 				week: 2,
 				hours: [
 					{
@@ -293,7 +293,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 2,
+				day: [2],
 				week: 2,
 				hours: [
 					{
@@ -308,7 +308,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 2,
+				day: [2],
 				week: 1,
 				hours: [
 					{
@@ -330,7 +330,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 2,
 				hours: [
 					{
@@ -345,7 +345,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 1,
+				day: [1],
 				week: 2,
 				hours: [
 					{
@@ -360,7 +360,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 1,
 				hours: [
 					{
@@ -383,7 +383,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 4,
+				day: [4],
 				week: 1,
 				hours: [
 					{
@@ -405,7 +405,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 2,
 				hours: [
 					{
@@ -420,7 +420,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 1,
+				day: [1],
 				week: 1,
 				hours: [
 					{
@@ -435,7 +435,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 1,
 				hours: [
 					{
@@ -450,7 +450,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 3,
+				day: [3],
 				week: 1,
 				hours: [
 					{
@@ -472,7 +472,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 1,
+				day: [1],
 				week: 2,
 				hours: [
 					{
@@ -487,7 +487,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 4,
+				day: [4],
 				week: 2,
 				hours: [
 					{
@@ -502,7 +502,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 2,
+				day: [2],
 				week: 2,
 				hours: [
 					{
@@ -517,7 +517,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 5,
+				day: [5],
 				week: 2,
 				hours: [
 					{
@@ -532,7 +532,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 2,
+				day: [2],
 				week: 1,
 				hours: [
 					{
@@ -554,7 +554,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 3,
+				day: [3],
 				week: 2,
 				hours: [
 					{
@@ -569,7 +569,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 3,
+				day: [3],
 				week: 1,
 				hours: [
 					{
@@ -584,7 +584,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 3,
+				day: [3],
 				week: 1,
 				hours: [
 					{
@@ -606,7 +606,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 5,
+				day: [5],
 				week: 2,
 				hours: [
 					{
@@ -621,7 +621,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 5,
+				day: [5],
 				week: 1,
 				hours: [
 					{
@@ -643,7 +643,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 3,
+				day: [3],
 				week: 1,
 				hours: [
 					{
@@ -658,7 +658,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 5,
+				day: [5],
 				week: 1,
 				hours: [
 					{
@@ -673,7 +673,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 2,
+				day: [2],
 				week: 2,
 				hours: [
 					{
@@ -695,7 +695,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 1,
+				day: [1],
 				week: 1,
 				hours: [
 					{
@@ -710,7 +710,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 1,
+				day: [1],
 				week: 2,
 				hours: [
 					{
@@ -732,7 +732,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 2,
+				day: [2],
 				week: 1,
 				hours: [
 					{
@@ -747,7 +747,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 3,
+				day: [3],
 				week: 2,
 				hours: [
 					{
@@ -769,7 +769,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 1,
 				hours: [
 					{
@@ -791,7 +791,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Кураторский час',
-				day: 5,
+				day: [5],
 				week: 1,
 				hours: [
 					{
@@ -813,7 +813,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 5,
+				day: [5],
 				week: 1,
 				hours: [
 					{
@@ -828,7 +828,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 0,
+				day: [0],
 				week: 2,
 				hours: [
 					{
@@ -850,7 +850,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 1,
 				hours: [
 					{
@@ -873,7 +873,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 1,
+				day: [1],
 				week: 1,
 				hours: [
 					{
@@ -888,7 +888,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 4,
+				day: [4],
 				week: 1,
 				hours: [
 					{
@@ -903,7 +903,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Пара',
-				day: 0,
+				day: [0],
 				week: 2,
 				hours: [
 					{
@@ -918,7 +918,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 1,
+				day: [1],
 				week: 1,
 				hours: [
 					{
@@ -940,7 +940,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 4,
+				day: [4],
 				week: 1,
 				hours: [
 					{
@@ -955,7 +955,7 @@ export const subjectsChgu: TypeSubjects = [
 			},
 			{
 				type: 'Лекция',
-				day: 1,
+				day: [1],
 				week: 2,
 				hours: [
 					{
@@ -977,7 +977,7 @@ export const subjectsChgu: TypeSubjects = [
 		shadules: [
 			{
 				type: 'Пара',
-				day: 5,
+				day: [5],
 				week: 2,
 				hours: [
 					{

@@ -1,4 +1,4 @@
-import { getCurrentWeek, getWeekNumber } from '@/composables'
+import { getWeekNumber } from '@/composables'
 import { hours, subjectsChgu } from '@/data/data'
 import { defineStore } from 'pinia'
 
@@ -16,65 +16,73 @@ export const useDataStore = defineStore('dataStore', {
 	}),
 
 	actions: {
-		getDayFromIndex(idx: number) {
-			return this.filteredHoursFromDay.find((_, id) => id === idx)
+		getDayHours(
+			this: IState & { filteredSubjects: ISubject[] },
+			idx: number,
+			groupWeek: number = this.filters.groupWeek,
+			groupName: string = this.filters.groupName,
+			teacher: string = this.filters.teacher
+		) {
+			const currentDate = new Date()
+
+			return hours.map((hourItem: IHourLection) => {
+				const subject = this.filteredSubjects.reduce(
+					(acc, subject: ISubject) => {
+						const shadule = subject.shadules.reduce((acc, shadule) => {
+							const isCorrectDay = shadule.day.includes(idx)
+							const isCorrectWeek = !shadule.week || shadule.week === groupWeek
+							const hour = shadule.hours.reduce((acc, sheduleHour: IHour) => {
+								const isGroupMatch =
+									sheduleHour.group === groupName ||
+									(teacher &&
+										(!sheduleHour.dateStart ||
+											!sheduleHour.dateEnd ||
+											(sheduleHour.dateStart <= currentDate &&
+												sheduleHour.dateEnd > currentDate)))
+
+								if (!acc && sheduleHour.time === hourItem.hour && isGroupMatch)
+									return sheduleHour
+								return acc
+							}, null)
+
+							if (isCorrectDay && isCorrectWeek && hour && !acc)
+								return { ...shadule, hour }
+							return acc
+						}, null)
+
+						if (shadule && !acc) return { ...subject, shadule }
+						return acc
+					},
+					null
+				)
+
+				return {
+					...hourItem,
+					positionHour: `${hourItem.hour - 1}-${hourItem.hour}`,
+					subject,
+				}
+			})
 		},
 	},
 
 	getters: {
 		filteredSubjects: (state: IState): ISubject[] => {
+			const { groupName, teacher, groupWeek } = state.filters
+
 			return subjectsChgu.filter((subject: ISubject) => {
-				const { groupName, teacher, groupWeek } = state.filters
+				const matchesTeacher =
+					!teacher ||
+					subject.teacher.toLowerCase().includes(teacher.toLowerCase())
+				const matchesWeek =
+					!groupWeek ||
+					subject.shadules.some(shadule => shadule.week === groupWeek)
+				const matchesGroupName =
+					!groupName ||
+					subject.shadules.some(shadule =>
+						shadule.hours.some(h => h.group === groupName)
+					)
 
-				return (
-					(!teacher ||
-						subject.teacher.toLowerCase().includes(teacher.toLowerCase())) &&
-					(!groupWeek ||
-						subject.shadules.find(shadule => shadule.week === groupWeek)) &&
-					(!groupName ||
-						subject.shadules.find(shadule =>
-							shadule.hours.find(h => h.group === groupName)
-						))
-				)
-			})
-		},
-
-		filteredHoursFromDay(state: IState) {
-			const { groupWeek, teacher, groupName } = state.filters
-			const getFilteredSubjects: ISubject[] = this.filteredSubjects
-
-			return getCurrentWeek().map((dayFromWeek, idxDay) => {
-				return {
-					...dayFromWeek,
-					idxDay,
-					subjects: hours.map((hourItem: IHourLection) => {
-						return {
-							...hourItem,
-							positionHour: `${hourItem.hour - 1}-${hourItem.hour}`,
-							subject: getFilteredSubjects.find((subjectArray: ISubject) =>
-								subjectArray.shadules.find(
-									shadule =>
-										(shadule.day === idxDay ||
-											(Array.isArray(shadule.day) &&
-												shadule.day.includes(idxDay))) &&
-										(shadule.week === groupWeek || shadule.week === '') &&
-										shadule.hours.some(
-											(sheduleHour: IHour) =>
-												sheduleHour.time === hourItem.hour &&
-												(teacher
-													? true
-													: sheduleHour.group === groupName &&
-													  (sheduleHour.dateEnd === '' ||
-															sheduleHour.dateStart === undefined ||
-															sheduleHour.dateEnd === undefined ||
-															(sheduleHour.dateStart <= new Date() &&
-																sheduleHour.dateEnd > new Date())))
-										)
-								)
-							),
-						}
-					}),
-				}
+				return matchesTeacher && matchesWeek && matchesGroupName
 			})
 		},
 	},

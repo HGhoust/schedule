@@ -10,7 +10,7 @@ export interface IHour {
 
 interface IShadule {
 	type: string
-	day: number | number[]
+	day: number[]
 	week: number | ''
 	hours: IHour[]
 }

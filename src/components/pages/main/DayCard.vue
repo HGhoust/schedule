@@ -5,13 +5,21 @@
 			<h2 class="text-center">{{ date }}</h2>
 		</div>
 		<ul class="flex flex-col">
-			<li class="px-3" v-for="item in data.subjects" :key="item">
+			<li
+				class="px-3"
+				v-for="item in dataStore.getDayHours(index)"
+				:key="item.positionHour"
+			>
 				<div class="list-info flex items-center min-h-24" v-if="item.subject">
 					<span class="min-w-10">{{ item.positionHour }}</span>
 					<div class="flex flex-col flex-1">
 						<span class="">{{ item.subject.name }}</span>
-						<span class="text-xs">Преподаватель {{ item.subject }}</span>
-						<span class="text-xs">Кабинет</span>
+						<span class="text-xs"
+							>Преподаватель {{ item.subject.teacher }}</span
+						>
+						<span class="text-xs"
+							>Кабинет {{ item.subject.shadule.hour.room }}</span
+						>
 					</div>
 				</div>
 				<div class="list-info flex items-center min-h-24" v-else>
@@ -25,10 +33,9 @@
 
 <script setup lang="ts">
 import { useDataStore, useThemeStore } from '@/stores'
-
 const props = defineProps({
-	data: {
-		type: Object,
+	index: {
+		type: Number,
 		required: true,
 	},
 	day: {
@@ -40,13 +47,8 @@ const props = defineProps({
 		required: false,
 	},
 })
-
-const dataStore = useDataStore()
 const themeStore = useThemeStore()
-
-setTimeout(() => {
-	console.log(props.data)
-}, 3000)
+const dataStore = useDataStore()
 </script>
 
 <style lang="sass" scoped>
