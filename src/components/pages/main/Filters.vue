@@ -42,8 +42,8 @@ const groupNames = computed((): string[] => {
 	const groups = new Set()
 
 	dataStore.filteredSubjects.forEach(subject => {
-		subject.shadules.forEach(shadule => {
-			shadule.hours.forEach(hour => {
+		subject.schedules.forEach(schedule => {
+			schedule.hours.forEach(hour => {
 				if (hour.group) {
 					groups.add(hour.group)
 				}

@@ -1,4 +1,4 @@
-import type { IHourLection, TypeSubjects } from '@/types/date'
+import type { IHourLection, ISubject } from '@/types/date'
 
 export const hours: IHourLection[] = [
 	{
@@ -28,12 +28,12 @@ export const hours: IHourLection[] = [
 	},
 ]
 
-export const subjectsChgu: TypeSubjects = [
+export const subjectsChgu: ISubject[] = [
 	{
 		name: 'Хирургия',
 		teacher: 'Магомадов Э.Л.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [0],
@@ -45,7 +45,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -55,7 +54,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Терапия',
 		teacher: 'Ахмадова Е.А.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [1],
@@ -67,7 +66,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -82,7 +80,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -108,7 +105,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Неврология',
 		teacher: 'Дудаева А.А-С.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [2],
@@ -120,7 +117,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -130,7 +126,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Топографическая анатомия',
 		teacher: 'Межидов С-М.Н.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [0],
@@ -142,7 +138,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -152,7 +147,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Дермато-венерология',
 		teacher: 'Адаев Х.М.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [3],
@@ -164,7 +159,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -190,7 +184,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Стоматология',
 		teacher: 'Кариев У.С.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [4],
@@ -202,7 +196,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -212,7 +205,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Гинекология',
 		teacher: 'Габатаева Г.У.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [4],
@@ -224,7 +217,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -234,7 +226,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Судебная медицина',
 		teacher: 'Махаев М.Р.',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [5],
@@ -246,7 +238,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: '406',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -275,7 +266,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Общая химия',
 		teacher: 'Магомадова Мадина Хусейновна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Лекция',
 				day: [0],
@@ -287,7 +278,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -302,7 +292,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -317,7 +306,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -327,7 +315,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'История России',
 		teacher: 'Товсултанов Рустам Алхазурович',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [0],
@@ -339,7 +327,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -354,7 +341,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -369,7 +355,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[1].timeStart,
 						timeEnd: hours[1].timeEnd,
-						dateEnd: '',
 					},
 					{
 						room: 'В3-09',
@@ -377,7 +362,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[2].timeStart,
 						timeEnd: hours[2].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -392,7 +376,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -402,7 +385,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Иностранный язык',
 		teacher: 'Алдиева Марина Шахидовна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [0],
@@ -414,7 +397,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[2].timeStart,
 						timeEnd: hours[2].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -429,7 +411,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -444,7 +425,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -459,7 +439,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -469,7 +448,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Анатомия',
 		teacher: 'Умарова Мадина Джандаровна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [1],
@@ -481,7 +460,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -496,7 +474,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -511,7 +488,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[2].timeStart,
 						timeEnd: hours[2].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -526,7 +502,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -541,7 +516,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -551,7 +525,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Биология',
 		teacher: 'Хасанова Разита Исхаковна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [3],
@@ -563,7 +537,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -578,7 +551,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[0].timeStart,
 						timeEnd: hours[0].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -593,7 +565,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[2].timeStart,
 						timeEnd: hours[2].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -603,7 +574,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Чеченский язык',
 		teacher: 'Мамалова Хоузу Эдилсултановна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [5],
@@ -615,7 +586,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -630,7 +600,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -640,7 +609,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Основы Российской Государственности',
 		teacher: 'Юсупова Хазан Мусиповна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [3],
@@ -652,7 +621,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -667,7 +635,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -682,7 +649,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -692,7 +658,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Физкультура',
 		teacher: 'уточнить',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [1],
@@ -704,7 +670,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -719,7 +684,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -729,7 +693,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Латинский язык',
 		teacher: 'Магомадова Рукият Вахитовна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [2],
@@ -741,7 +705,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -756,7 +719,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -766,7 +728,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Медицинская информатика',
 		teacher: 'Висаитова Бэлла Хадиевна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [0],
@@ -778,7 +740,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -788,7 +749,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Кураторский час',
 		teacher: 'Куратор',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Кураторский час',
 				day: [5],
@@ -800,7 +761,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -810,7 +770,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Экономика',
 		teacher: 'Алматова Имани Лачиевна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [5],
@@ -822,7 +782,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -837,7 +796,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -847,7 +805,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'История России',
 		teacher: 'Товсултанов Рустам Алхазурович',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [0],
@@ -859,7 +817,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 					{
 						room: 'В3-09',
@@ -867,7 +824,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -882,7 +838,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -897,7 +852,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -912,7 +866,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -927,7 +880,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -937,7 +889,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Обучение служением',
 		teacher: 'Автуев Имран Сулумбекович',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [4],
@@ -949,7 +901,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -964,7 +915,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},
@@ -974,7 +924,7 @@ export const subjectsChgu: TypeSubjects = [
 		name: 'Лекарственные растения',
 		teacher: 'Джабраилова Лариса Хамзатовна',
 		location: 'Медицинский корпус ЧГУ',
-		shadules: [
+		schedules: [
 			{
 				type: 'Пара',
 				day: [5],
@@ -986,7 +936,6 @@ export const subjectsChgu: TypeSubjects = [
 						group: 'Ст-110',
 						timeStart: hours[3].timeStart,
 						timeEnd: hours[3].timeEnd,
-						dateEnd: '',
 					},
 				],
 			},

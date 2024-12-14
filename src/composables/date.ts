@@ -1,39 +1,38 @@
 // для получения времени начала лекции с обратным отсчетом
-export const updateSheduleTimeStart = (
-	timeSheduleStart: number,
-	timestamp: number,
+export const updateScheduleTimeStart = (
+	timeScheduleStart: number,
+	newTime: Date,
 	text: string = '00:00:00'
 ): string => {
-	let now = timestamp
-	let gap = timeSheduleStart - now
+	// let now = newTime.getTime()
+	let now = newTime
+	let gap = timeScheduleStart - now
 
-	let hours: string | number = Math.floor(gap / 1000 / 60 / 60) % 24
-	let minutes: string | number = Math.floor(gap / 1000 / 60) % 60
-	let seconds: string | number = Math.floor(gap / 1000) % 60
+	const formatTime = (time: number): string =>
+		time < 10 ? '0' + time : time.toString()
 
-	hours = hours < 10 ? '0' + hours : hours
-	minutes = minutes < 10 ? '0' + minutes : minutes
-	seconds = seconds < 10 ? '0' + seconds : seconds
+	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60) % 24)
+	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
+	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
 	return gap > 0 ? `${hours}ч : ${minutes}м : ${seconds}с` : text
 }
 
 // для получения времени конца лекции с обратным отсчетом
-export const updateSheduleTimeEnd = (
-	timeSheduleEnd: number,
-	timestamp: number,
+export const updateScheduleTimeEnd = (
+	timeScheduleEnd: number,
+	newTime: Date,
 	text: string = '00:00:00'
 ): string => {
-	let now = timestamp
-	let gap = timeSheduleEnd - now
+	let now = newTime.getTime()
+	let gap = timeScheduleEnd - now
 
-	let hours: string | number = Math.floor(gap / 1000 / 60 / 60) % 24
-	let minutes: string | number = Math.floor(gap / 1000 / 60) % 60
-	let seconds: string | number = Math.floor(gap / 1000) % 60
+	const formatTime = (time: number): string =>
+		time < 10 ? '0' + time : time.toString()
 
-	hours = hours < 10 ? '0' + hours : hours
-	minutes = minutes < 10 ? '0' + minutes : minutes
-	seconds = seconds < 10 ? '0' + seconds : seconds
+	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60) % 24)
+	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
+	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
 	return gap > 0 ? `${hours}ч : ${minutes}м : ${seconds}с` : text
 }

@@ -14,17 +14,38 @@
 					<span class="min-w-10">{{ item.positionHour }}</span>
 					<div class="flex flex-col flex-1">
 						<span class="">{{ item.subject.name }}</span>
-						<span class="text-xs"
-							>Преподаватель {{ item.subject.teacher }}</span
+						<div class="flex justify-between">
+							<span class="text-xs">Преподаватель</span>
+							<span class="text-xs pr-5">{{ item.subject.teacher }}</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-xs">Кабинет</span>
+							<span class="text-xs pr-5">{{
+								item.subject.schedule?.hour?.room
+							}}</span>
+						</div>
+						<div class="flex justify-between" v-if="!timeStarted(item)">
+							<span class="text-xs">До начала пары осталось</span>
+							<span class="text-xs pr-5"
+								>{{
+									updateScheduleTimeStart(timeStart(item), dataStore.newTime)
+								}}
+							</span>
+						</div>
+						<div
+							class="flex justify-between"
+							v-if="!timeEnded(item) && timeStarted(item)"
 						>
-						<span class="text-xs"
-							>Кабинет {{ item.subject.shadule.hour.room }}</span
-						>
+							<span class="text-xs">До конца пары осталось</span>
+							<span class="text-xs pr-5">{{
+								updateScheduleTimeEnd(timeEnd(item), dataStore.newTime)
+							}}</span>
+						</div>
 					</div>
 				</div>
 				<div class="list-info flex items-center min-h-24" v-else>
 					<span class="min-w-10">{{ item.positionHour }}</span>
-					<span>Нет пар</span>
+					<span>Нет пары</span>
 				</div>
 			</li>
 		</ul>
@@ -32,7 +53,11 @@
 </template>
 
 <script setup lang="ts">
+import { updateScheduleTimeEnd, updateScheduleTimeStart } from '@/composables'
 import { useDataStore, useThemeStore } from '@/stores'
+import type { ISubject } from '@/types/date'
+import { onMounted, onUnmounted } from 'vue'
+
 const props = defineProps({
 	index: {
 		type: Number,
@@ -49,6 +74,43 @@ const props = defineProps({
 })
 const themeStore = useThemeStore()
 const dataStore = useDataStore()
+
+interface IItem {
+	positionHour: string
+	subject: ISubject | null
+	hour: number
+	timeStart: number
+	timeEnd: number
+}
+
+const timeEnd = (item: IItem): number => {
+	return item.subject?.schedule?.hour?.timeEnd as number
+}
+const timeStart = (item: IItem): number => {
+	return item.subject?.schedule?.hour?.timeStart as number
+}
+
+const timeEnded = (item: IItem): boolean => {
+	return updateScheduleTimeEnd(timeEnd(item), dataStore.newTime) === '00:00:00'
+}
+
+const timeStarted = (item: IItem): boolean => {
+	return (
+		updateScheduleTimeStart(timeStart(item), dataStore.newTime) === '00:00:00'
+	)
+}
+
+let interval: number
+
+onMounted((): void => {
+	interval = setInterval((): void => {
+		dataStore.newTime = new Date()
+	}, 999)
+})
+
+onUnmounted((): void => {
+	clearInterval(interval)
+})
 </script>
 
 <style lang="sass" scoped>

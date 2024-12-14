@@ -21,7 +21,7 @@
 			>&times;</span
 		>
 		<ul
-			class="absolute w-full max-h-96 overflow-scroll z-10 mt-1 border rounded-t-md rounded-b-md overflow-hidden"
+			class="absolute w-full max-h-96 overflow-scroll z-10 mt-1 border rounded-t-md rounded-b-md"
 			:class="themeStore.theme"
 			v-if="isActive && localOptions.length"
 		>

@@ -2,16 +2,17 @@ export interface IHour {
 	room: string
 	time: number
 	group: string
-	timeStart: Date | number
-	timeEnd: Date | number
+	timeStart: number
+	timeEnd: number
 	dateStart?: Date
-	dateEnd?: Date | string
+	dateEnd?: Date
 }
 
-interface IShadule {
+export interface ISchedule {
 	type: string
 	day: number[]
 	week: number | ''
+	hour?: IHour
 	hours: IHour[]
 }
 
@@ -19,7 +20,6 @@ export interface ISubject {
 	name: string
 	teacher: string
 	location: string
-	shadules: IShadule[]
+	schedule?: ISchedule
+	schedules: ISchedule[]
 }
-
-export type TypeSubjects = ISubject[]

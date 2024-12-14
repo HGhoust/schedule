@@ -18,6 +18,9 @@ import DayCard from './DayCard.vue'
 const currentWeek = getCurrentWeek()
 
 const dataStore = useDataStore()
+setTimeout(() => {
+	console.log(dataStore.getDayHours(0))
+}, 3000)
 </script>
 
 <style scoped></style>
