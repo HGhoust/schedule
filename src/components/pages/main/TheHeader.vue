@@ -65,6 +65,6 @@ const currentDay = computed(() => theWeekDays[currentDayNumber.value])
 	stroke: variables.$textDarkBlue
 
 .sun
-	stroke: #fff
-	fill: #fff
+	stroke: variables.$bgWhite
+	fill: variables.$bgWhite
 </style>

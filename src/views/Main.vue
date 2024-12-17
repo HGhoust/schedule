@@ -14,11 +14,10 @@
 import Filters from '@/components/pages/main/Filters.vue'
 import TheHeader from '@/components/pages/main/TheHeader.vue'
 import Week from '@/components/pages/main/Week.vue'
-import { useDataStore, useThemeStore } from '@/stores'
+import { useThemeStore } from '@/stores'
 import { onMounted, onUnmounted } from 'vue'
 
 const themeStore = useThemeStore()
-const dataStore = useDataStore()
 
 onMounted(() => {
 	const savedTheme = localStorage.getItem('theme')

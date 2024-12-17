@@ -4,9 +4,10 @@ export const updateScheduleTimeStart = (
 	newTime: Date,
 	text: string = '00:00:00'
 ): string => {
-	// let now = newTime.getTime()
-	let now = newTime
+	let now = newTime.getTime()
+	// let now = newTime
 	let gap = timeScheduleStart - now
+	let pag = now - timeScheduleStart
 
 	const formatTime = (time: number): string =>
 		time < 10 ? '0' + time : time.toString()
@@ -15,7 +16,8 @@ export const updateScheduleTimeStart = (
 	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
 	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
-	return gap > 0 ? `${hours}ч : ${minutes}м : ${seconds}с` : text
+	// return gap > 0 ? `${hours}ч : ${minutes}м : ${seconds}с` : text
+	return pag ? `${hours}ч : ${minutes}м : ${seconds}с` : text
 }
 
 // для получения времени конца лекции с обратным отсчетом
