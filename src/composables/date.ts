@@ -2,32 +2,33 @@
 export const updateScheduleTimeStart = (
 	timeScheduleStart: number,
 	newTime: Date,
-	text: string = '00:00:00'
+	defaultText: string = '00:00:00'
 ): string => {
 	let now = newTime.getTime()
-	// let now = newTime
 	let gap = timeScheduleStart - now
-	let pag = now - timeScheduleStart
+
+	if (gap <= 0) return defaultText
 
 	const formatTime = (time: number): string =>
-		time < 10 ? '0' + time : time.toString()
+		time < 10 ? `0${time}` : time.toString()
 
 	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60) % 24)
 	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
 	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
-	// return gap > 0 ? `${hours}ч : ${minutes}м : ${seconds}с` : text
-	return pag ? `${hours}ч : ${minutes}м : ${seconds}с` : text
+	return `${hours}ч : ${minutes}м : ${seconds}с`
 }
 
 // для получения времени конца лекции с обратным отсчетом
 export const updateScheduleTimeEnd = (
 	timeScheduleEnd: number,
 	newTime: Date,
-	text: string = '00:00:00'
+	defaultText: string = '00:00:00'
 ): string => {
 	let now = newTime.getTime()
 	let gap = timeScheduleEnd - now
+
+	if (gap <= 0) return defaultText
 
 	const formatTime = (time: number): string =>
 		time < 10 ? '0' + time : time.toString()
@@ -36,7 +37,7 @@ export const updateScheduleTimeEnd = (
 	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
 	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
-	return gap > 0 ? `${hours}ч : ${minutes}м : ${seconds}с` : text
+	return `${hours}ч : ${minutes}м : ${seconds}с`
 }
 
 export const theWeekDays: string[] = [

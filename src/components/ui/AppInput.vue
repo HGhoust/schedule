@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { resizeText } from '@/composables'
 import { useThemeStore } from '@/stores'
 import type { PropType } from 'vue'
 import { onMounted, onUnmounted, ref } from 'vue'
@@ -154,11 +155,7 @@ const handleClickOutside = (event: MouseEvent): void => {
 const updateTextBasedOnWidth = (width: number): void => {
 	if (width < 330) {
 		localOptions.value = props.options.map((item: string): string => {
-			const parts = item.split(' ')
-			if (parts[1]?.[1] === '.' || parts[1]?.[1] === '-' || item.length <= 10) {
-				return item
-			}
-			return `${parts[0]} ${parts[1]?.[0]}.${parts[2]?.[0]}.`
+			return resizeText(item)
 		})
 	}
 }

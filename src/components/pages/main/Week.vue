@@ -8,9 +8,9 @@
 			:date="dayInf.date"
 		/>
 	</div>
-	<div class="scroll relative flex justify-center pt-7">
+	<div class="scroll relative flex justify-center mt-7">
 		<button
-			class="fixed z-50 button w-14 h-14 bottom-0"
+			class="fixed z-50 button w-14 h-14 bottom-1"
 			@click="scrollUp()"
 			v-if="scrollValue > 390"
 		>

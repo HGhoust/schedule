@@ -16,7 +16,9 @@
 						<span class="">{{ item.subject.name }}</span>
 						<div class="flex justify-between">
 							<span class="text-xs">Преподаватель</span>
-							<span class="text-xs pr-5">{{ item.subject.teacher }}</span>
+							<span class="text-xs pr-5">{{
+								resizeText(item.subject.teacher)
+							}}</span>
 						</div>
 						<div class="flex justify-between">
 							<span class="text-xs">Кабинет</span>
@@ -24,7 +26,10 @@
 								item.subject.schedule?.hour?.room
 							}}</span>
 						</div>
-						<div class="flex justify-between" v-if="!timeStarted(item)">
+						<div
+							class="flex justify-between"
+							v-if="timeStartVisible(item, index)"
+						>
 							<span class="text-xs">До начала пары осталось</span>
 							<span class="text-xs pr-5"
 								>{{
@@ -34,7 +39,7 @@
 						</div>
 						<div
 							class="flex justify-between"
-							v-if="!timeEnded(item) && timeStarted(item)"
+							v-if="timeEndVisible(item, index)"
 						>
 							<span class="text-xs">До конца пары осталось</span>
 							<span class="text-xs pr-5">{{
@@ -53,10 +58,14 @@
 </template>
 
 <script setup lang="ts">
-import { updateScheduleTimeEnd, updateScheduleTimeStart } from '@/composables'
+import {
+	resizeText,
+	updateScheduleTimeEnd,
+	updateScheduleTimeStart,
+} from '@/composables'
 import { useDataStore, useThemeStore } from '@/stores'
 import type { ISubject } from '@/types/date'
-import { onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
 	index: {
@@ -74,6 +83,8 @@ const props = defineProps({
 })
 const themeStore = useThemeStore()
 const dataStore = useDataStore()
+// получаем номер дня недели так что-бы 0 был понедельник
+const currentDayInWeek = computed(() => (dataStore.newTime.getDay() + 6) % 7)
 
 interface IItem {
 	positionHour: string
@@ -90,13 +101,17 @@ const timeStart = (item: IItem): number => {
 	return item.subject?.schedule?.hour?.timeStart as number
 }
 
-const timeEnded = (item: IItem): boolean => {
-	return updateScheduleTimeEnd(timeEnd(item), dataStore.newTime) === '00:00:00'
+const timeEndVisible = (item: IItem, idDay: number): boolean => {
+	return (
+		updateScheduleTimeEnd(timeEnd(item), dataStore.newTime) !== '00:00:00' &&
+		currentDayInWeek.value === idDay
+	)
 }
 
-const timeStarted = (item: IItem): boolean => {
+const timeStartVisible = (item: IItem, idDay: number): boolean => {
 	return (
-		updateScheduleTimeStart(timeStart(item), dataStore.newTime) === '00:00:00'
+		updateScheduleTimeStart(timeStart(item), dataStore.newTime) !==
+			'00:00:00' && currentDayInWeek.value === idDay
 	)
 }
 
