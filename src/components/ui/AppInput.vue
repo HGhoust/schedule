@@ -16,7 +16,7 @@
 		<span
 			class="input--clear"
 			:class="themeStore.theme"
-			@click="$emit('update:modelValue', '')"
+			@click="deleteInputValue"
 			v-if="isActive"
 			>&times;</span
 		>
@@ -35,7 +35,7 @@
 				:key="id"
 				@mouseenter="isHovered = true"
 				@mouseleave="isHovered = false"
-				@click="selectOption(id)"
+				@click="selectOption(id), (selectedItemIndex = id)"
 			>
 				{{ item }}
 			</li>
@@ -44,10 +44,10 @@
 </template>
 
 <script setup lang="ts">
-import { resizeText } from '@/composables'
+import { resizeNameAndSurname, useKeyboardNavigation } from '@/composables'
 import { useThemeStore } from '@/stores'
 import type { PropType } from 'vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps({
 	placeholder: {
@@ -69,15 +69,17 @@ const themeStore = useThemeStore()
 
 const localOptions = ref<string[]>([...props.options])
 const activeIndex = ref<number>(0)
+const selectedItemIndex = ref<number>(0)
 const selectRef = ref<null | HTMLInputElement>(null)
-const resizeElement = ref<null | HTMLLIElement>(null)
-const ulElement = ref<null | HTMLLIElement>(null)
+const resizeElement = ref<null | HTMLDivElement>(null)
+const ulElement = ref<null | HTMLUListElement>(null)
 const isActive = ref<boolean>(false)
 const isHovered = ref<boolean>(false)
 
 const handleBlur = (): void => {
 	//что-бы клик успел сработать при закрытии листа при отмене фокуса с элемента
 	setTimeout(() => {
+		activeIndex.value = 0
 		isActive.value = false
 	}, 100)
 }
@@ -85,8 +87,10 @@ const handleBlur = (): void => {
 // для прокрутки элемента в видимую область при переключении с помощью стрелок
 const scrollToActiveOption = (): void => {
 	const activeItem = ulElement.value?.children[activeIndex.value] as HTMLElement
+	removeKeyboardClass()
 
 	if (activeItem) {
+		activeItem.classList.add('keyboard')
 		activeItem.scrollIntoView({
 			behavior: 'smooth',
 			block: 'nearest',
@@ -94,44 +98,45 @@ const scrollToActiveOption = (): void => {
 	}
 }
 
+const removeKeyboardClass = (): void => {
+	ulElement.value?.querySelectorAll('li').forEach(item => {
+		item.classList.remove('keyboard')
+	})
+}
+
 //Для переключения с клавиатуры
-const handleKeyDown = (event: KeyboardEvent): void => {
-	if (!localOptions.value.length) return
-	switch (event.key) {
-		case 'ArrowDown':
-			event.preventDefault()
-			if (isActive.value) {
-				//что-бы не превышало длины входных данных
-				activeIndex.value = (activeIndex.value + 1) % localOptions.value.length
-				scrollToActiveOption()
-			}
-			break
-		case 'ArrowUp':
-			event.preventDefault()
-			if (isActive.value) {
-				//что-бы не превышало длины входных данных и не ушло в отрицательную сторону
-				activeIndex.value =
-					(activeIndex.value - 1 + localOptions.value.length) %
-					localOptions.value.length
-				scrollToActiveOption()
-			}
-			break
-		case 'Enter':
-			event.preventDefault()
-			isActive.value ? selectOption(activeIndex.value) : (isActive.value = true)
-			break
-		case 'Escape':
+const { handleKeyDown } = useKeyboardNavigation(
+	{
+		length: localOptions.value.length,
+		onEnter(index) {
+			!isActive.value ? toggle() : selectOption(index)
+		},
+		onEscape() {
 			isActive.value = false
 			activeIndex.value = 0
-			break
-	}
-}
+		},
+		onArrowDown() {
+			scrollToActiveOption()
+		},
+		onArrowUp() {
+			scrollToActiveOption()
+		},
+	},
+	activeIndex,
+	isActive
+)
 
 const selectOption = (index: number): void => {
 	const selectedItem = localOptions.value[index]
 
 	emit('update:modelValue', selectedItem)
 	isActive.value = false
+	activeIndex.value = index
+	selectedItemIndex.value = activeIndex.value
+}
+
+const deleteInputValue = (): void => {
+	emit('update:modelValue', '')
 	activeIndex.value = 0
 }
 
@@ -141,8 +146,22 @@ const updateValue = (): void => {
 	}
 }
 
-const toggle = (): void => {
+const toggle = async (): Promise<void> => {
 	isActive.value = !isActive.value
+	removeKeyboardClass()
+	// ждем до следующего обновления DOM
+	await nextTick()
+	// для scroll и назначения класса исходя из данных в input
+	const targetIndex = props.modelValue
+		? selectedItemIndex.value
+		: activeIndex.value
+	const targetItem = ulElement.value?.children[targetIndex]
+
+	targetItem?.scrollIntoView({
+		behavior: 'smooth',
+		block: 'nearest',
+	})
+	targetItem?.classList.add('keyboard')
 }
 
 const handleClickOutside = (event: MouseEvent): void => {
@@ -155,7 +174,7 @@ const handleClickOutside = (event: MouseEvent): void => {
 const updateTextBasedOnWidth = (width: number): void => {
 	if (width < 330) {
 		localOptions.value = props.options.map((item: string): string => {
-			return resizeText(item)
+			return resizeNameAndSurname(item)
 		})
 	}
 }

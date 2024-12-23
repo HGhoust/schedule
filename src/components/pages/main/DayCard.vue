@@ -13,11 +13,11 @@
 				<div class="list-info flex items-center min-h-24" v-if="item.subject">
 					<span class="min-w-10">{{ item.positionHour }}</span>
 					<div class="flex flex-col flex-1">
-						<span class="">{{ item.subject.name }}</span>
+						<span class="">{{ resizeSubjectName(item.subject.name) }}</span>
 						<div class="flex justify-between">
 							<span class="text-xs">Преподаватель</span>
 							<span class="text-xs pr-5">{{
-								resizeText(item.subject.teacher)
+								resizeNameAndSurname(item.subject.teacher)
 							}}</span>
 						</div>
 						<div class="flex justify-between">
@@ -25,6 +25,10 @@
 							<span class="text-xs pr-5">{{
 								item.subject.schedule?.hour?.room
 							}}</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-xs">Локация</span>
+							<span class="text-xs pr-5">{{ item.subject.location }}</span>
 						</div>
 						<div
 							class="flex justify-between"
@@ -59,7 +63,8 @@
 
 <script setup lang="ts">
 import {
-	resizeText,
+	resizeNameAndSurname,
+	resizeSubjectName,
 	updateScheduleTimeEnd,
 	updateScheduleTimeStart,
 } from '@/composables'

@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { useKeyboardNavigation } from '@/composables'
 import { useThemeStore } from '@/stores/themeStore'
 import { onMounted, onUnmounted, ref, type PropType } from 'vue'
 
@@ -59,34 +60,20 @@ const localOptions = ref<(number | string)[]>([...props.options])
 const activeIndex = ref<number>(0)
 const isHovered = ref<boolean>(false)
 
-const handleKeyDown = (event: KeyboardEvent): void => {
-	if (!localOptions) return
-
-	switch (event.key) {
-		case 'ArrowUp':
-			event.preventDefault()
-			if (isActive.value) {
-				activeIndex.value = (activeIndex.value + 1) % localOptions.value.length
-			}
-			break
-		case 'ArrowDown':
-			event.preventDefault()
-			if (isActive.value) {
-				activeIndex.value =
-					(activeIndex.value - 1 + localOptions.value.length) %
-					localOptions.value.length
-			}
-			break
-		case 'Enter':
-			event.preventDefault()
-			isActive.value ? selectOption(activeIndex.value) : (isActive.value = true)
-			break
-		case 'Escape':
+const { handleKeyDown } = useKeyboardNavigation(
+	{
+		length: localOptions.value.length,
+		onEnter(index) {
+			!isActive.value ? toggle() : selectOption(index)
+		},
+		onEscape() {
 			isActive.value = false
 			activeIndex.value = 0
-			break
-	}
-}
+		},
+	},
+	activeIndex,
+	isActive
+)
 
 const selectOption = (index: number): void => {
 	const selectedItem = localOptions.value[index]
