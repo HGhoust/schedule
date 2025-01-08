@@ -28,7 +28,9 @@
 						</div>
 						<div class="flex justify-between">
 							<span class="text-xs">Локация</span>
-							<span class="text-xs pr-5">{{ item.subject.location }}</span>
+							<span class="text-xs pr-5">{{
+								item.subject.schedule?.location
+							}}</span>
 						</div>
 						<div
 							class="flex justify-between"
@@ -122,7 +124,8 @@ const timeStartVisible = (item: IItem, idDay: number): boolean => {
 
 let interval: number
 
-onMounted((): void => {
+onMounted(async (): Promise<void> => {
+	await dataStore.fetchSubjects()
 	interval = setInterval((): void => {
 		dataStore.newTime = new Date()
 	}, 999)

@@ -1,3 +1,5 @@
+import type { ISubject } from '@/types/date'
+
 export interface IState {
 	filters: {
 		groupName: string
@@ -5,4 +7,5 @@ export interface IState {
 		groupWeek: number
 	}
 	newTime: Date
+	subjects: ISubject[] | []
 }

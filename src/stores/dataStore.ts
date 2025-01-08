@@ -1,5 +1,5 @@
 import { getWeekNumber } from '@/composables'
-import { hours, subjectsChgu } from '@/data/data'
+import { hours } from '@/data/data'
 import { defineStore } from 'pinia'
 
 import type { IHour, IHourLection, ISchedule, ISubject } from '@/types/date'
@@ -13,8 +13,8 @@ export const useDataStore = defineStore('dataStore', {
 			groupWeek: getWeekNumber(new Date()),
 		},
 		newTime: new Date(),
+		subjects: [],
 	}),
-
 	actions: {
 		getDayHours(
 			this: IState & { filteredSubjects: ISubject[] },
@@ -72,27 +72,123 @@ export const useDataStore = defineStore('dataStore', {
 				}
 			})
 		},
+
+		async fetchSubjects() {
+			try {
+				const response = await fetch(
+					'https://schedule-gh-default-rtdb.firebaseio.com/subjects.json',
+					{
+						method: 'GET',
+					}
+				)
+				const responseSchedules = await fetch(
+					'https://schedule-gh-default-rtdb.firebaseio.com/schedules.json',
+					{
+						method: 'GET',
+					}
+				)
+				const data = await response.json()
+				const dataSchedules = await responseSchedules.json()
+				const dataSchedulesResult = Object.keys(dataSchedules).map(
+					(key, id) => {
+						return dataSchedules[key].map((item: ISchedule) => {
+							return {
+								...item,
+								key: Object.keys(data)[id],
+								hours: item.hours.map((item: IHour) => {
+									return {
+										group: item.group,
+										room: item.room,
+										time: item.time,
+										timeStart: hours[item.time / 2 - 1].timeStart,
+										timeEnd: hours[item.time / 2 - 1].timeEnd,
+									}
+								}),
+							}
+						})
+					}
+				)
+
+				const result = Object.keys(data).map((key, id) => ({
+					name: data[key].name,
+					teacher: data[key].teacher,
+					key: key,
+					schedules: dataSchedulesResult
+						.flat()
+						.filter(item => item.idx === data[key].idx),
+					schedules2: dataSchedulesResult[id][0].id,
+				}))
+
+				this.subjects = [...result]
+				console.log('Processed Subjects:', this.subjects)
+				console.log('id', dataSchedulesResult)
+			} catch (error) {
+				console.error('Ошибка при загрузке данных:', error)
+			}
+		},
+
+		// addSubject(
+		// 	this: IState & { filteredSubjects: ISubject[] },
+		// 	name: string,
+		// 	teacher: string,
+		// 	group: string,
+		// 	type: string,
+		// 	location: string,
+		// 	room: string,
+		// 	week: number,
+		// 	day: number[],
+		// 	position: number,
+		// 	hours: IHourLection[]
+		// ) {
+		// 	subjectsChgu.push(<ISubject>{
+		// 		name: name,
+		// 		teacher: teacher,
+		// 		schedules: [
+		// 			{
+		// 				type: type,
+		// 				location: location,
+		// 				day: day,
+		// 				week: week,
+		// 				hours: [
+		// 					{
+		// 						room: room,
+		// 						time: position % 2 === 0 ? position : position + 1,
+		// 						group: group,
+		// 						timeStart: hours[position - 1].timeStart,
+		// 						timeEnd: hours[position - 1].timeEnd,
+		// 					},
+		// 				],
+		// 			},
+		// 		],
+		// 	})
+		// 	console.log(subjectsChgu)
+		// },
 	},
 
 	getters: {
 		filteredSubjects: (state: IState): ISubject[] => {
 			const { groupName, teacher, groupWeek } = state.filters
 
-			return subjectsChgu.filter((subject: ISubject) => {
-				const matchesTeacher =
-					!teacher ||
-					subject.teacher.toLowerCase().includes(teacher.toLowerCase())
-				const matchesWeek =
-					!groupWeek ||
-					subject.schedules.some(schedule => schedule.week === groupWeek)
-				const matchesGroupName =
-					!groupName ||
-					subject.schedules.some(schedule =>
-						schedule.hours.some(h => h.group === groupName)
-					)
+			if (state.subjects.length) {
+				return state.subjects.filter((subject: ISubject) => {
+					const matchesTeacher =
+						!teacher ||
+						subject.teacher.toLowerCase().includes(teacher.toLowerCase())
+					const matchesWeek =
+						!groupWeek ||
+						subject.schedules.some(schedule => schedule.week === groupWeek)
+					const matchesGroupName =
+						!groupName ||
+						subject.schedules.some(schedule =>
+							schedule.hours.some(h =>
+								h.group.toLowerCase().includes(groupName.toLowerCase())
+							)
+						)
 
-				return matchesTeacher && matchesWeek && matchesGroupName
-			})
+					return matchesTeacher && matchesWeek && matchesGroupName
+				})
+			}
+			return []
 		},
 	},
 })

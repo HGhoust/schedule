@@ -7,12 +7,14 @@
 			v-model="dataStore.filters.teacher"
 			:options="teachers"
 			placeholder="Введите преподавателя"
+			input-type="search"
 		/>
 		<AppInput
 			class="flex-1"
 			v-model="dataStore.filters.groupName"
 			:options="groupNames"
 			placeholder="Введите группу"
+			input-type="search"
 		/>
 		<AppSelect
 			class="flex-1"
@@ -25,34 +27,14 @@
 <script setup lang="ts">
 import AppInput from '@/components/ui/AppInput.vue'
 import AppSelect from '@/components/ui/AppSelect.vue'
-import { useDataStore } from '@/stores/dataStore'
+import { useDataStore, useFiltersStore } from '@/stores'
 import { computed } from 'vue'
 
+const filtersStore = useFiltersStore()
 const dataStore = useDataStore()
 
-const teachers = computed((): string[] => [
-	...new Set(
-		dataStore.filteredSubjects
-			.map(subject => subject.teacher)
-			.filter(teacher => teacher && teacher !== 'уточнить')
-	),
-])
-
-const groupNames = computed((): string[] => {
-	const groups = new Set()
-
-	dataStore.filteredSubjects.forEach(subject => {
-		subject.schedules.forEach(schedule => {
-			schedule.hours.forEach(hour => {
-				if (hour.group) {
-					groups.add(hour.group)
-				}
-			})
-		})
-	})
-
-	return [...groups] as string[]
-})
+const teachers = computed(() => filtersStore.teachers)
+const groupNames = computed(() => filtersStore.groupNames)
 </script>
 
 <style scoped></style>
