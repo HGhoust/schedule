@@ -26,12 +26,12 @@
 								item.subject.schedule?.hour?.room
 							}}</span>
 						</div>
-						<div class="flex justify-between">
+						<!-- <div class="flex justify-between">
 							<span class="text-xs">Локация</span>
 							<span class="text-xs pr-5">{{
 								item.subject.schedule?.location
 							}}</span>
-						</div>
+						</div> -->
 						<div
 							class="flex justify-between"
 							v-if="timeStartVisible(item, index)"

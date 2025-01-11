@@ -21,6 +21,16 @@ export const useThemeStore = defineStore('themeStore', {
 			localStorage.setItem('theme', this.theme)
 		},
 
+		selectLightTheme(): void {
+			this.theme = 'light'
+			localStorage.setItem('theme', this.theme)
+		},
+
+		selectDarkTheme(): void {
+			this.theme = 'dark'
+			localStorage.setItem('theme', this.theme)
+		},
+
 		updateTheme(): void {
 			this.systemTheme = this.prefersDark.matches ? 'dark' : 'light'
 			this.theme = this.theme || this.systemTheme

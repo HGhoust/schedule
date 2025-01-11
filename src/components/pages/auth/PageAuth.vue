@@ -7,25 +7,26 @@
 			<form
 				action=""
 				class="px-5 py-5 flex flex-col justify-center gap-5 h-full"
-				@submit.prevent=""
+				@submit.prevent="submitForm()"
 			>
 				<h1 class="text-center text-2xl">{{ titleText }}</h1>
 				<AppInput
 					placeholder="Введите почту"
 					input-type="email"
 					v-model="email"
-					v-if="!isLogin"
-				/>
-				<AppInput
-					placeholder="Введите номер"
-					input-type="tel"
-					v-model="number"
 				/>
 				<AppInput
 					placeholder="Введите пароль"
 					input-type="password"
 					:password="true"
 					v-model="password"
+				/>
+				<AppInput
+					placeholder="Подтвердите пароль"
+					input-type="password"
+					:password="true"
+					v-model="passwordConfirm"
+					v-if="!isLogin"
 				/>
 				<appButton
 					:text="submitButtonText"
@@ -43,18 +44,26 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import AppThemeButton from '@/components/ui/AppThemeButton.vue'
 import { useThemeStore } from '@/stores'
+import {
+	createUserWithEmailAndPassword,
+	getAuth,
+	signInWithEmailAndPassword,
+} from 'firebase/auth'
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const themeStore = useThemeStore()
 const isLogin = ref<boolean>(true)
-const number = ref('')
 const password = ref('')
+const passwordConfirm = ref('')
 const email = ref<string>('')
+const isLoading = ref<boolean>(false)
+const router = useRouter()
 
 const isFilled = computed<boolean>(() =>
 	isLogin.value
-		? !number.value || !password.value
-		: !number.value || !password.value || !email.value
+		? !email.value || !password.value
+		: !password.value || !email.value
 )
 const titleText = computed<string>(() =>
 	isLogin.value ? 'Вход' : 'Регистрация'
@@ -67,6 +76,45 @@ const authButtonText = computed<string>(() =>
 )
 
 const toggleAuth = () => (isLogin.value = !isLogin.value)
+
+const submitForm = (): void => {
+	const signUpError = () => {
+		console.log('ssss', 'Пароли не совпадают')
+	}
+
+	if (isLogin.value) {
+		signIn()
+	} else if (!isLogin.value) {
+		password.value === passwordConfirm.value ? signUp() : signUpError()
+	}
+}
+
+const signUp = async (): Promise<void> => {
+	isLoading.value = true
+	try {
+		await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+		router.push('/')
+	} catch (error: unknown) {
+		if (error instanceof Error) {
+			console.log(error.message)
+		}
+	} finally {
+		isLoading.value = false
+	}
+}
+const signIn = async (): Promise<void> => {
+	isLoading.value = true
+	try {
+		await signInWithEmailAndPassword(getAuth(), email.value, password.value)
+		router.push('/')
+	} catch (error: unknown) {
+		if (error instanceof Error) {
+			console.log(error.message)
+		}
+	} finally {
+		isLoading.value = false
+	}
+}
 </script>
 
 <style lang="sass" scoped>

@@ -120,8 +120,6 @@ export const useDataStore = defineStore('dataStore', {
 				}))
 
 				this.subjects = [...result]
-				console.log('Processed Subjects:', this.subjects)
-				console.log('id', dataSchedulesResult)
 			} catch (error) {
 				console.error('Ошибка при загрузке данных:', error)
 			}

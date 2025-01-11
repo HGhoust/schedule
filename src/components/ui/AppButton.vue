@@ -1,9 +1,10 @@
 <template>
 	<div :class="themeStore.theme">
 		<button
-			class="submit w-full h-11 px-2"
+			class="w-full h-11 px-2"
 			:class="type"
 			:disabled="disabled"
+			:type="type"
 			@click="onClick"
 		>
 			{{ text }}
@@ -27,8 +28,7 @@ const props = defineProps({
 	},
 	type: {
 		type: String,
-		default: 'btn',
-		required: false,
+		default: 'button',
 	},
 	modelValue: {
 		type: Boolean,
@@ -53,7 +53,7 @@ const onClick = (): void => {
 	color: variables.$bgWhite
 
 .light
-	.btn
+	.button
 		background: variables.$textDarkBlue
 		color: variables.$bgWhite
 
