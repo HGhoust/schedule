@@ -19,6 +19,8 @@
 		<AppSelect
 			class="flex-1"
 			v-model="dataStore.filters.groupWeek"
+			text="Неделя"
+			placeholder="Неделя"
 			:options="[1, 2]"
 		></AppSelect>
 	</div>
@@ -28,13 +30,30 @@
 import AppInput from '@/components/ui/AppInput.vue'
 import AppSelect from '@/components/ui/AppSelect.vue'
 import { useDataStore, useFiltersStore } from '@/stores'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 const filtersStore = useFiltersStore()
 const dataStore = useDataStore()
 
-const teachers = computed(() => filtersStore.teachers)
+const teachers = computed(() => {
+	const filteredSchedulesInUser = dataStore.schedules.filter(schedule =>
+		schedule.hours.find(
+			hour =>
+				!dataStore.filters.groupName ||
+				hour.group === dataStore.filters.groupName
+		)
+	)
+	const teachers = dataStore.teachers.filter(teacher =>
+		filteredSchedulesInUser.find(schedule => teacher.id === schedule.id)
+	)
+
+	return teachers.map(teacher => teacher.teacher)
+})
 const groupNames = computed(() => filtersStore.groupNames)
+onMounted(async () => {
+	await dataStore.fetchTeachers()
+	dataStore.fetchSchedules()
+})
 </script>
 
 <style scoped></style>

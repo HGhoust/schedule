@@ -1,10 +1,10 @@
 <template>
-	<div :class="themeStore.theme">
+	<div class="rounded-2xl">
 		<button
-			class="w-full h-11 px-2"
-			:class="type"
+			class="w-full h-14 px-2 rounded-2xl text-xl"
+			:class="[color, themeStore.theme]"
 			:disabled="disabled"
-			:type="type"
+			:type="buttonType"
 			@click="onClick"
 		>
 			{{ text }}
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { useThemeStore } from '@/stores'
-import { defineProps } from 'vue'
+import { defineProps, type PropType } from 'vue'
 
 const props = defineProps({
 	text: {
@@ -26,14 +26,18 @@ const props = defineProps({
 		default: false,
 		required: false,
 	},
-	type: {
-		type: String,
+	buttonType: {
+		type: String as PropType<'button' | 'submit' | 'reset'>,
 		default: 'button',
 	},
 	modelValue: {
 		type: Boolean,
 		default: true,
 		required: false,
+	},
+	color: {
+		type: String,
+		default: 'button',
 	},
 })
 
@@ -48,21 +52,41 @@ const onClick = (): void => {
 <style lang="sass" scoped>
 @use '/src/assets/styles/variables.sass'
 
-.submit
-	background: #15803d
+.danger
+	background: #f23027
 	color: variables.$bgWhite
+	transition: all 0.5s
+	&:hover
+			font-size: 21px
+
+.submit
+	background: #14A444
+	color: variables.$bgWhite
+	transition: all 0.5s
+	&:hover
+			font-size: 21px
 
 .light
 	.button
-		background: variables.$textDarkBlue
-		color: variables.$bgWhite
+		background: variables.$bgButtonWhite
+		transition: all 0.5s
+
+		&:hover
+			background-color: variables.$bgWhite
+			font-size: 21px
+
+.dark
+	.button
+		background: variables.$bgButtonBlack
+		transition: all 0.5s
+
+		&:hover
+			background-color: variables.$bgBlack
+			font-size: 21px
 
 button
-	border-radius: 0.375rem
-
 	&:disabled
 		background: #f8fafc
 		color: #64748b
-		border: 1px solid variables.$textDarkBlue
 		cursor: not-allowed
 </style>

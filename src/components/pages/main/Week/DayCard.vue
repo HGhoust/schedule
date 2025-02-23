@@ -1,12 +1,19 @@
+<Loader />
 <template>
-	<div class="card rounded-md" :class="themeStore.theme">
+	<div class="card relative rounded-3xl" :class="themeStore.theme">
+		<img
+			src="/src//assets/icons/online.svg"
+			alt=""
+			class="size-4 absolute top-6 right-6"
+			v-if="currentDayInWeek === index"
+		/>
 		<div class="flex flex-col justify-center min-h-24">
 			<h2 class="text-center">{{ day }}</h2>
 			<h2 class="text-center">{{ date }}</h2>
 		</div>
 		<ul class="flex flex-col">
 			<li
-				class="px-3"
+				class="list-item px-3 m-3 rounded-3xl"
 				v-for="item in dataStore.getDayHours(index)"
 				:key="item.positionHour"
 			>
@@ -37,10 +44,8 @@
 							v-if="timeStartVisible(item, index)"
 						>
 							<span class="text-xs">До начала пары осталось</span>
-							<span class="text-xs pr-5"
-								>{{
-									updateScheduleTimeStart(timeStart(item), dataStore.newTime)
-								}}
+							<span class="text-xs pr-5">
+								{{ timeStartCurrentOrNextDay(item, index) }}
 							</span>
 						</div>
 						<div
@@ -49,14 +54,14 @@
 						>
 							<span class="text-xs">До конца пары осталось</span>
 							<span class="text-xs pr-5">{{
-								updateScheduleTimeEnd(timeEnd(item), dataStore.newTime)
+								timeEndCurrentOrNextDay(item, index)
 							}}</span>
 						</div>
 					</div>
 				</div>
 				<div class="list-info flex items-center min-h-24" v-else>
 					<span class="min-w-10">{{ item.positionHour }}</span>
-					<span>Нет пары</span>
+					<span :class="{ disable: item }">Нет пары</span>
 				</div>
 			</li>
 		</ul>
@@ -110,22 +115,47 @@ const timeStart = (item: IItem): number => {
 
 const timeEndVisible = (item: IItem, idDay: number): boolean => {
 	return (
-		updateScheduleTimeEnd(timeEnd(item), dataStore.newTime) !== '00:00:00' &&
-		currentDayInWeek.value === idDay
+		(timeEndCurrentOrNextDay(item, idDay) !== '00:00:00' &&
+			idDay === currentDayInWeek.value) ||
+		idDay === (currentDayInWeek.value === 6 ? 0 : currentDayInWeek.value + 1)
 	)
 }
 
 const timeStartVisible = (item: IItem, idDay: number): boolean => {
 	return (
-		updateScheduleTimeStart(timeStart(item), dataStore.newTime) !==
-			'00:00:00' && currentDayInWeek.value === idDay
+		(timeStartCurrentOrNextDay(item, idDay) !== '00:00:00' &&
+			idDay === currentDayInWeek.value) ||
+		idDay === (currentDayInWeek.value === 6 ? 0 : currentDayInWeek.value + 1)
+	)
+}
+
+const timeStartCurrentOrNextDay = (item: IItem, idDay: number) => {
+	return updateScheduleTimeStart(
+		timeStart(item),
+		dataStore.newTime,
+		currentDayInWeek.value !== idDay ? true : false
+	)
+}
+const timeEndCurrentOrNextDay = (item: IItem, idDay: number) => {
+	return updateScheduleTimeEnd(
+		timeEnd(item),
+		dataStore.newTime,
+		currentDayInWeek.value !== idDay ? true : false
 	)
 }
 
 let interval: number
 
 onMounted(async (): Promise<void> => {
-	await dataStore.fetchSubjects()
+	try {
+		dataStore.isLoading = true
+		await dataStore.fetchSubjects()
+	} catch (error) {
+		console.log(error)
+	} finally {
+		dataStore.isLoading = false
+	}
+
 	interval = setInterval((): void => {
 		dataStore.newTime = new Date()
 	}, 999)
@@ -140,15 +170,27 @@ onUnmounted((): void => {
 @use '/src/assets/styles/variables.sass'
 
 .card
-	border: 1px solid
+	min-height: 450px
 
 .dark
-	border: 2px solid
+	.card
+		background-color: variables.$bgCardBlack
+		box-shadow: 5px 5px 20px 0px #1e1e1e
 
-.card
-	min-height: 450px
-	border-color: variables.$textDarkBlue
+	.list-item
+		background-color: variables.$bgButtonBlack
+
+.light
+	.card
+		background-color: variables.$bgCardWhite
+		box-shadow: 5px 5px 20px 0px #CACACC
+
+	.list-item
+		background-color: variables.$bgButtonWhite
 
 .list-info
 	grid-template-columns: 1fr 7fr
+
+.disable
+	color: variables.$textGray
 </style>

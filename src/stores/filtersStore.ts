@@ -1,10 +1,6 @@
+import type { IFiltersState } from '@/types/store/filtersStore'
 import { defineStore } from 'pinia'
 import { useDataStore } from './dataStore'
-type DataStoreType = ReturnType<typeof useDataStore>
-
-interface IFiltersState {
-	dataStore: DataStoreType
-}
 
 export const useFiltersStore = defineStore('filtersStore', {
 	state: (): IFiltersState => {
@@ -17,8 +13,8 @@ export const useFiltersStore = defineStore('filtersStore', {
 			const groups = new Set()
 
 			this.dataStore.filteredSubjects.forEach(subject => {
-				subject.schedules.forEach(schedule => {
-					schedule.hours.forEach(hour => {
+				subject.schedules?.forEach(schedule => {
+					schedule.hours?.forEach(hour => {
 						if (hour.group) {
 							groups.add(hour.group)
 						}
@@ -32,7 +28,7 @@ export const useFiltersStore = defineStore('filtersStore', {
 		teachers(): string[] {
 			return [
 				...new Set(
-					this.dataStore.filteredSubjects
+					this.dataStore.teachers
 						.map(subject => subject.teacher)
 						.filter(teacher => teacher && teacher !== 'уточнить')
 				),

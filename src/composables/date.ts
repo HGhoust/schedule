@@ -2,17 +2,22 @@
 export const updateScheduleTimeStart = (
 	timeScheduleStart: number,
 	newTime: Date,
+	nextDay: boolean = false,
 	defaultText: string = '00:00:00'
 ): string => {
 	let now = newTime.getTime()
 	let gap = timeScheduleStart - now
 
-	if (gap <= 0) return defaultText
+	if (nextDay) {
+		gap += 24 * 60 * 60 * 1000
+	} else if (!nextDay && gap <= 0) {
+		return defaultText
+	}
 
 	const formatTime = (time: number): string =>
 		time < 10 ? `0${time}` : time.toString()
 
-	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60) % 24)
+	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60))
 	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
 	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
@@ -23,17 +28,22 @@ export const updateScheduleTimeStart = (
 export const updateScheduleTimeEnd = (
 	timeScheduleEnd: number,
 	newTime: Date,
+	nextDay: boolean = false,
 	defaultText: string = '00:00:00'
 ): string => {
 	let now = newTime.getTime()
 	let gap = timeScheduleEnd - now
 
-	if (gap <= 0) return defaultText
+	if (nextDay) {
+		gap += 24 * 60 * 60 * 1000
+	} else if (!nextDay && gap <= 0) {
+		return defaultText
+	}
 
 	const formatTime = (time: number): string =>
 		time < 10 ? '0' + time : time.toString()
 
-	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60) % 24)
+	const hours = formatTime(Math.floor(gap / 1000 / 60 / 60))
 	const minutes = formatTime(Math.floor(gap / 1000 / 60) % 60)
 	const seconds = formatTime(Math.floor(gap / 1000) % 60)
 
@@ -99,4 +109,8 @@ export const getWeekNumber = (date: Date): number => {
 		(date.getTime() - startOfFirstWeek.getTime()) / millisecondsInWeek
 	)
 	return weekNumber % 2 === 0 ? 2 : 1
+}
+
+export const stringToDate = (str: string) => {
+	return str.split(':').map(Number)
 }

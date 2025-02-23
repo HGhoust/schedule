@@ -7,7 +7,11 @@
 
 html, body
 	overflow: hidden
+	max-height: 100vh
 	height: 100vh
+	&::-webkit-scrollbar
+		width: 0
+		height: 0
 
 body 
 	@apply font-sans text-base
@@ -19,7 +23,7 @@ body
 
 .light
 	background-color: variables.$bgWhite
-	color: variables.$bgDarkBlue
+	color: #000
 
 	input:-webkit-autofill
 		-webkit-box-shadow: 0 0 0px 1000px variables.$bgWhite inset
@@ -27,7 +31,7 @@ body
 		-webkit-text-fill-color: variables.$bgDarkBlue !important
 
 .dark
-	background-color: variables.$bgDarkBlue
+	background-color: variables.$bgBlack
 	color: variables.$bgWhite
 
 	input:-webkit-autofill

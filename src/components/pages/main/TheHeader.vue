@@ -1,35 +1,22 @@
 <template>
 	<header class="flex items-center justify-between mb-6 mx-2">
-		<div class="flex-1">
-			<h2>Расписание</h2>
-		</div>
-		<div
-			class="flex-1 flex flex-col items-center sm:flex-row sm:justify-around"
-		>
-			<h2>{{ currentDay }}</h2>
-			<h2>{{ getCurrentWeek }}</h2>
-		</div>
 		<div class="flex-1 flex justify-end">
-			<button class="size-8 cursor-pointer z-20" @click="openAside()">
-				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-					<g
-						id="SVGRepo_tracerCarrier"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					></g>
-					<g id="SVGRepo_iconCarrier">
-						<path
-							:class="themeStore.theme"
-							d="M4 6H20M4 12H20M4 18H20"
-							stroke="#000000"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						></path>
-					</g>
-				</svg>
-			</button>
+			<div
+				class="user__card grid gap-1 w-full lg:w-[300px] h-14 min-w-min min-h-min p-4 rounded-xl"
+			>
+				<div class="user flex justify-between gap-1">
+					<h3>{{ timesOfDay }}</h3>
+					<h3>{{ dataStore.user?.name }}</h3>
+				</div>
+				<div class="week flex justify-between gap-1">
+					<h4>Текущая неделя</h4>
+					<h4>{{ getCurrentWeek }}</h4>
+				</div>
+				<div class="day flex justify-between gap-1">
+					<h4>День недели</h4>
+					<h4>{{ currentDay }}</h4>
+				</div>
+			</div>
 		</div>
 	</header>
 </template>
@@ -37,19 +24,37 @@
 <script setup lang="ts">
 import { getWeekNumber, theWeekDays } from '@/composables'
 import { useDataStore, useThemeStore } from '@/stores'
-import { computed, inject, ref } from 'vue'
+import type { IUser } from '@/types/date'
+import { computed, onMounted, ref } from 'vue'
 
-const aside = ref(inject('aside'))
 const dataStore = useDataStore()
 const themeStore = useThemeStore()
+const user = ref<IUser | null>(null)
+const getHours = computed(() => dataStore.newTime.getHours())
 
-const getCurrentWeek = computed(
-	() => `Неделя ${getWeekNumber(dataStore.newTime)}`
-)
+const timesOfDay = computed((): string => {
+	let timesOfDay = ''
+	if (getHours.value >= 5 && getHours.value < 12) {
+		timesOfDay = 'Доброе утро'
+	} else if (getHours.value >= 12 && getHours.value < 17) {
+		timesOfDay = 'Добрый день'
+	} else if (getHours.value >= 17 && getHours.value < 22) {
+		timesOfDay = 'Добрый вечер'
+	} else if (getHours.value >= 22 || getHours.value < 5) {
+		timesOfDay = 'Доброй ночи'
+	}
+
+	return timesOfDay
+})
+
+const getCurrentWeek = computed(() => `${getWeekNumber(dataStore.newTime)}`)
 
 const currentDayNumber = ref(new Date().getDay())
 const currentDay = computed(() => theWeekDays[currentDayNumber.value])
-const openAside = (): boolean => (aside.value = true)
+
+onMounted(() => {
+	dataStore.getAuthUser()
+})
 </script>
 
 <style lang="sass" scoped>
@@ -58,7 +63,23 @@ const openAside = (): boolean => (aside.value = true)
 .light
 	stroke: variables.$textDarkBlue
 
+	.user__card
+		background-color: variables.$bgCardWhite
+
+		h3, h4
+			background-color: variables.$bgInputWhite
+			padding: 5px 10px
+			border-radius: 12px
+
 .dark
 	stroke: variables.$bgWhite
 	fill: variables.$bgWhite
+
+	.user__card
+		background-color: variables.$bgCardBlack
+
+		h3, h4
+			background-color: variables.$bgInputBlack
+			padding: 5px 10px
+			border-radius: 12px
 </style>

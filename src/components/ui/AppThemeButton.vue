@@ -38,7 +38,7 @@ const themeStore = useThemeStore()
 <style lang="sass" scoped>
 @use '/src/assets/styles/variables.sass'
 .moon
-	stroke: variables.$textDarkBlue
+	stroke: #000
 
 .sun
 	stroke: variables.$bgWhite

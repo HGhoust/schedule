@@ -9,14 +9,34 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/views/Main.vue'),
 	},
 	{
-		path: '/Auth',
-		name: 'auth',
-		component: () => import('@/components/pages/auth/PageAuth.vue'),
+		path: '/Register',
+		name: 'register',
+		component: () => import('@/views/Auth/Register.vue'),
 	},
 	{
-		path: '/Add-Schedule',
-		name: 'add-schedule',
-		component: () => import('@/components/pages/addSchedule/addSchedule.vue'),
+		path: '/Login',
+		name: 'login',
+		component: () => import('@/views/Auth/Login.vue'),
+	},
+	{
+		path: '/ResetPassword',
+		name: 'reset-password',
+		component: () => import('@/views/Auth/ResetPassword.vue'),
+	},
+	{
+		path: '/Teachers',
+		name: 'teachers',
+		component: () => import('@/views/Teachers.vue'),
+	},
+	{
+		path: '/teachers-lesson/:id?',
+		name: 'teachers-lesson',
+		component: () => import('@/views/TeachersLesson.vue'),
+	},
+	{
+		path: '/Users',
+		name: 'users',
+		component: () => import('@/views/Users.vue'),
 	},
 ]
 
@@ -26,7 +46,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-	const publicPages = ['/Auth']
+	const publicPages = ['/Login', '/Register', '/ResetPassword']
 	const authRequired = !publicPages.includes(to.path)
 
 	if (authRequired) {
@@ -39,7 +59,7 @@ router.beforeEach(async (to, from, next) => {
 		})
 
 		if (!user) {
-			return next('/Auth')
+			return next('/Login')
 		}
 	}
 	next()

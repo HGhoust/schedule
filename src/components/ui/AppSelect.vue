@@ -1,21 +1,35 @@
 <template>
-	<div class="select relative">
+	<div class="select relative text-xl">
 		<button
-			class="btn w-full h-11 px-2 text-start focus:outline-none rounded-md"
+			class="btn relative w-full h-14 px-7 text-start focus:outline-none rounded-xl"
 			:class="themeStore.theme"
 			ref="selectRef"
+			type="button"
 			@click="toggle"
 			@keydown="handleKeyDown"
 		>
-			{{ `${text} ${modelValue}` }}
+			{{
+				`${modelValue === 0 || modelValue === '' ? '' : placeholder} ${
+					modelValue === 0 || modelValue === '' ? 'Не выбран' : modelValue
+				}`
+			}}
+			<slot></slot>
 		</button>
+		<span :class="{ 'btn--bottom': !isActive }" />
+		<!-- <span
+			class="btn--clear"
+			:class="themeStore.theme"
+			@click="deleteInputValue"
+			v-if="modelValue && isActive"
+			>&times;</span
+		> -->
 		<ul
-			class="absolute w-full z-10 mt-1 border rounded-t-md rounded-b-md overflow-hidden"
+			class="absolute w-full max-h-96 z-10 mt-1 rounded-2xl overflow-hidden"
 			:class="themeStore.theme"
 			v-if="isActive"
 		>
 			<li
-				class="h-11 px-2 content-center cursor-pointer first:rounded-t-md last:rounded-b-md last:border-0 border-b"
+				class="h-14 px-2 content-center cursor-pointer rounded-2xl"
 				:class="{
 					'themeStore.theme keyboard': activeIndex === id && !isHovered,
 				}"
@@ -25,7 +39,11 @@
 				@mouseleave="isHovered = false"
 				@click="$emit('update:modelValue', item)"
 			>
-				{{ `${text} ${item}` }}
+				{{
+					`${item === 0 || item === '' ? '' : text} ${
+						item === 0 || item === '' ? 'Не выбран' : item
+					}`
+				}}
 			</li>
 		</ul>
 	</div>
@@ -39,15 +57,19 @@ import { onMounted, onUnmounted, ref, type PropType } from 'vue'
 const props = defineProps({
 	text: {
 		type: String,
-		default: 'Неделя',
+		default: '',
+	},
+	placeholder: {
+		type: String,
+		default: '',
 	},
 	options: {
 		type: Array as PropType<number[] | string[]>,
 		default: () => [],
 	},
 	modelValue: {
-		type: Number,
-		default: 1,
+		type: [Number, String] as PropType<number | string | number[] | string[]>,
+		default: 0,
 	},
 })
 
@@ -59,6 +81,11 @@ const isActive = ref<boolean>(false)
 const localOptions = ref<(number | string)[]>([...props.options])
 const activeIndex = ref<number>(0)
 const isHovered = ref<boolean>(false)
+
+const deleteInputValue = (): void => {
+	emit('update:modelValue', '')
+	activeIndex.value = 0
+}
 
 const { handleKeyDown } = useKeyboardNavigation(
 	{
@@ -106,22 +133,25 @@ onUnmounted((): void => {
 @use '/src/assets/styles/variables.sass'
 
 .btn
-	border-color: variables.$textDarkBlue
+	&--clear
+		position: absolute
+		cursor: pointer
+		font-size: 20px
+		top: 50%
+		right: 20px
+		transform: translateY(-50%)
+		background: none
 
 .light
 	li
 		&:hover
-			background-color: variables.$textDarkBlue
-			color: #fff
+			background: variables.$bgButtonWhite
+			color: #000
 
 	.btn
-		border: 1px solid
-		border-color: variables.$textDarkBlue
+		background-color: variables.$bgInputWhite
 
-		&:focus
-			border: 2px solid
-
-		&::before
+		&--bottom
 			content: ""
 			position: absolute
 			top: 50%
@@ -131,24 +161,25 @@ onUnmounted((): void => {
 			height: 0
 			border-left: 5px solid transparent
 			border-right: 5px solid transparent
-			border-top: 5px solid variables.$bgDarkBlue
+			border-top: 5px solid black
+
+	ul
+		background-color: variables.$bgCardWhite
+		box-shadow: 5px 5px 20px 0px #CACACC
+
+	li
+		background-color: variables.$bgCardWhite
 
 .dark
 	li
-		border-color: variables.$pink
 		&:hover
-			background-color: variables.$pink
-
-	ul
-		border-color: variables.$pink
+			background: variables.$bgButtonBlack
+			color: #fff
 
 	.btn
-		border: 2px solid variables.$textDarkBlue !important
+		background-color: variables.$bgInputBlack
 
-		&:focus
-			border-color: variables.$pink !important
-
-		&::before
+		&--bottom
 			content: ""
 			position: absolute
 			top: 50%
@@ -158,22 +189,22 @@ onUnmounted((): void => {
 			height: 0
 			border-left: 5px solid transparent
 			border-right: 5px solid transparent
-			border-top: 5px solid #fff
+			border-top: 5px solid white
 
+	ul
+		background-color: variables.$bgCardBlack
+		box-shadow: 5px 5px 20px 0px #1e1e1e
 
-ul
-	border-color: variables.$textDarkBlue
-
-li
-	border-color: variables.$textDarkBlue
+	li
+		background-color: variables.$bgCardBlack
 
 @media (min-width: 1200px)
 	.light
 		.keyboard
-			background-color: variables.$textDarkBlue
-			color: #fff
+			background: variables.$bgButtonWhite
+			color: #000
 
 	.dark
 		.keyboard
-			background-color: variables.$pink
+			background: variables.$bgButtonBlack
 </style>

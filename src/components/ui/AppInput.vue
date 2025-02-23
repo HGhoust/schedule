@@ -1,22 +1,51 @@
 <template>
 	<div class="relative" ref="resizeElement" tabindex="0">
+		<span
+			class="absolute top-2/4 left-3 -translate-y-2/4 cursor-text"
+			@click="selectRef?.focus()"
+			v-if="localInputType === 'search'"
+		>
+			<svg
+				class="size-7"
+				viewBox="0 0 24 24"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+				<g
+					id="SVGRepo_tracerCarrier"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				></g>
+				<g id="SVGRepo_iconCarrier">
+					<path
+						d="M20 20L15.8033 15.8033C15.8033 15.8033 14 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5C18 11.0137 17.9484 11.5153 17.85 12"
+						stroke="gray"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					></path>
+				</g>
+			</svg>
+		</span>
 		<input
-			class="input w-full h-11 px-2 focus:outline-none rounded-md"
-			:class="themeStore.theme"
+			class="input w-full h-14 px-7 focus:outline-none rounded-xl text-xl"
+			:class="(themeStore.theme, { 'pl-14': localInputType === 'search' })"
 			ref="selectRef"
 			:type="localInputType"
+			:disabled="disabled"
 			:placeholder="placeholder"
 			:value="modelValue"
 			@input="updateValue"
 			@click="toggle"
-			@keydown="handleKeyDown"
+			@keydown="localOptions.handleKeyDown"
 			@blur="handleBlur"
 		/>
 		<span
 			class="input--clear"
 			:class="themeStore.theme"
 			@click="deleteInputValue"
-			v-if="modelValue"
+			v-if="modelValue && isActive"
 			>&times;</span
 		>
 		<svg
@@ -71,17 +100,17 @@
 			</g>
 		</svg>
 		<ul
-			class="absolute w-full max-h-96 overflow-y-scroll z-10 mt-1 border rounded-t-md rounded-b-md"
+			class="list absolute w-full max-h-96 overflow-y-scroll z-10 mt-2 rounded-t-2xl rounded-b-2xl"
 			:class="themeStore.theme"
 			ref="ulElement"
-			v-if="isActive && localOptions.length"
+			v-if="isActive && localOptions.options.length"
 		>
 			<li
-				class="h-11 px-2 content-center cursor-pointer first:rounded-t-md last:rounded-b-md last:border-0 border-b"
+				class="h-14 p-2 content-center cursor-pointer rounded-2xl text-xl pl-5"
 				:class="{
 					'themeStore.theme keyboard': activeIndex === id && !isHovered,
 				}"
-				v-for="(item, id) in localOptions"
+				v-for="(item, id) in localOptions.options"
 				:key="id"
 				@mouseenter="isHovered = true"
 				@mouseleave="isHovered = false"
@@ -104,12 +133,16 @@ const props = defineProps({
 		type: String,
 		default: 'Преподаватель',
 	},
+	disabled: {
+		type: Boolean,
+		default: false,
+	},
 	modelValue: {
 		type: [String, Number],
 		default: '',
 	},
 	options: {
-		type: Array as PropType<string[]>,
+		type: Array as PropType<string[] | number[]>,
 		default: () => [],
 	},
 	inputType: {
@@ -126,6 +159,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 const themeStore = useThemeStore()
 
+const widthEl = ref()
 const localInputType = ref<string>(props.inputType)
 const activeIndex = ref<number>(0)
 const selectedItemIndex = ref<number>(0)
@@ -135,7 +169,45 @@ const ulElement = ref<null | HTMLUListElement>(null)
 const isActive = ref<boolean>(false)
 const isHovered = ref<boolean>(false)
 
-const localOptions = computed(() => props.options)
+const localOptions = computed(() => {
+	//Для переключения с клавиатуры
+	const { handleKeyDown } = useKeyboardNavigation(
+		{
+			length: props.options.length,
+			onEnter(index) {
+				if (props.options.length) {
+					!isActive.value ? toggle() : selectOption(index)
+				}
+			},
+			onEscape() {
+				isActive.value = false
+				activeIndex.value = 0
+			},
+			onArrowDown() {
+				scrollToActiveOption()
+			},
+			onArrowUp() {
+				scrollToActiveOption()
+			},
+		},
+		activeIndex,
+		isActive
+	)
+
+	//укоротить инициалы если ширина меньше 330
+	if (widthEl.value < 360) {
+		return {
+			options: props.options.map((item: string | number): string | number =>
+				resizeNameAndSurname(item as string)
+			),
+			handleKeyDown,
+		}
+	}
+	return {
+		options: props.options,
+		handleKeyDown,
+	}
+})
 
 const handleBlur = (): void => {
 	//что-бы клик успел сработать при закрытии листа при отмене фокуса с элемента
@@ -165,30 +237,8 @@ const removeKeyboardClass = (): void => {
 	})
 }
 
-//Для переключения с клавиатуры
-const { handleKeyDown } = useKeyboardNavigation(
-	{
-		length: localOptions.value.length,
-		onEnter(index) {
-			!isActive.value ? toggle() : selectOption(index)
-		},
-		onEscape() {
-			isActive.value = false
-			activeIndex.value = 0
-		},
-		onArrowDown() {
-			scrollToActiveOption()
-		},
-		onArrowUp() {
-			scrollToActiveOption()
-		},
-	},
-	activeIndex,
-	isActive
-)
-
 const selectOption = (index: number): void => {
-	const selectedItem = localOptions.value[index]
+	const selectedItem = localOptions.value.options[index]
 
 	emit('update:modelValue', selectedItem)
 	isActive.value = false
@@ -231,22 +281,12 @@ const handleClickOutside = (event: MouseEvent): void => {
 	}
 }
 
-// Функция для того что-бы укоротить инициалы если ширина меньше 330
-const updateTextBasedOnWidth = (width: number): void => {
-	if (width < 330) {
-		localOptions.value.map((item: string): string => {
-			return resizeNameAndSurname(item)
-		})
-	}
-}
-
 onMounted((): void => {
 	document.addEventListener('click', handleClickOutside)
 
 	// проверка ширины элемента при монтировании
 	if (resizeElement.value) {
-		const width = resizeElement.value.getBoundingClientRect().width
-		updateTextBasedOnWidth(width)
+		widthEl.value = resizeElement.value.getBoundingClientRect().width
 	}
 })
 
@@ -259,33 +299,34 @@ onUnmounted((): void => {
 @use '/src/assets/styles/variables.sass'
 
 .light
+	ul
+		background-color: variables.$bgCardWhite
+		box-shadow: 5px 5px 20px 0px #CACACC
+		color: black
+
 	li
 		&:hover
-			background-color: variables.$textDarkBlue
-			color: #fff
+			background: variables.$bgButtonWhite
+			color: black
 
 	.input
-		border: 1px solid
-
-		&:focus
-			border: 2px solid
+		background-color: variables.$bgInputWhite
 
 .dark
-	li
-		border-color: variables.$pink
-		&:hover
-			background-color: variables.$pink
-
 	ul
-		border-color: variables.$pink
+		background-color: variables.$bgCardBlack
+		box-shadow: 5px 5px 20px 0px #1e1e1e
+		color: white
+
+	li
+		&:hover
+			background: variables.$bgButtonBlack
+			color: white
 
 	.input
-		border: 2px solid variables.$textDarkBlue
-		&:focus
-			border-color: variables.$pink
+		background-color: variables.$bgInputBlack
 
 .input
-	border-color: variables.$textDarkBlue
 	&::-webkit-search-cancel-button
 		-webkit-appearance: none
 	&--clear
@@ -295,8 +336,10 @@ onUnmounted((): void => {
 		top: 50%
 		right: 15px
 		transform: translateY(-50%)
+		background: none
 
 	&--eye
+		background: none
 		position: absolute
 		cursor: pointer
 		width: 20px
@@ -305,8 +348,6 @@ onUnmounted((): void => {
 		transform: translateY(-35%)
 
 ul
-	border-color: variables.$textDarkBlue
-
 	&::-webkit-scrollbar
 		width: 0
 		height: 0
@@ -316,11 +357,18 @@ li
 
 @media (min-width: 1200px)
 	.light
+		ul
+			color: #000
+
 		.keyboard
-			background-color: variables.$textDarkBlue
-			color: #fff
+			background: variables.$bgButtonWhite
+			color: #000
 
 	.dark
+		ul
+			color: #fff
+
 		.keyboard
-			background-color: variables.$pink
+			background: variables.$bgButtonBlack
+			color: #fff
 </style>
