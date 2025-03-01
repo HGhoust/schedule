@@ -6,27 +6,20 @@
 @tailwind utilities
 
 html, body
+	height: 100%
 	overflow: hidden
-	max-height: 100vh
-	height: 100vh
-	&::-webkit-scrollbar
-		width: 0
-		height: 0
+	overscroll-behavior: none
 
 body 
 	@apply font-sans text-base
 	overflow-y: auto
-
-@-moz-document url-prefix()
-	html
-		overflow: auto
 
 .light
 	background-color: variables.$bgWhite
 	color: #000
 
 	input:-webkit-autofill
-		-webkit-box-shadow: 0 0 0px 1000px variables.$bgWhite inset
+		-webkit-box-shadow: 0 0 1000px variables.$bgWhite inset
 		background-color: transparent !important
 		-webkit-text-fill-color: variables.$bgDarkBlue !important
 
@@ -35,6 +28,6 @@ body
 	color: variables.$bgWhite
 
 	input:-webkit-autofill
-		-webkit-box-shadow: 0 0 0px 1000px variables.$bgDarkBlue inset
+		-webkit-box-shadow: 0 0 1000px variables.$bgDarkBlue inset
 		background-color: transparent !important
 		-webkit-text-fill-color: variables.$bgWhite !important

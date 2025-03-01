@@ -1,4 +1,4 @@
-import type { IDays } from './asyncSubjects'
+import type { IDay } from './asyncSubjects'
 
 export interface IHour {
 	room: string
@@ -13,7 +13,7 @@ export interface IHour {
 export interface ISchedule {
 	type: string
 	location: string
-	day: [] | IDays[]
+	day: IDay[]
 	week: number | ''
 	hour?: IHour
 	hours: IHour[]

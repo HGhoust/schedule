@@ -40,7 +40,7 @@
 							@click="confirmDeletion(user.uId, user.name)"
 						>
 							<img
-								:src="`/src/assets/icons/${
+								:src="`/icons/${
 									themeStore.theme === 'light' ? 'deleteBlack' : 'deleteWhite'
 								}.svg`"
 								alt=""
@@ -49,7 +49,7 @@
 						</button>
 						<div class="grid grid-cols-1 items-center gap-3 pb-5 mt-11 lg:mt-0">
 							<img
-								:src="`/src/assets/icons/${addDefaultImage[usersId]}Teacher${
+								:src="`/icons/${addDefaultImage[usersId]}Teacher${
 									themeStore.theme[0].toUpperCase() + themeStore.theme.slice(1)
 								}.svg`"
 								alt=""

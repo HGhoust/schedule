@@ -25,13 +25,13 @@ export interface IScheduleListHour {
 	hourId: string
 }
 
-export interface IDays {
+export interface IDay {
 	id: number
 	day: string
 }
 
 export interface IScheduleList {
-	day: IDays[]
+	day: IDay[]
 	dayCount: number
 	hours: IScheduleListHour[]
 	id: string

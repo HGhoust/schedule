@@ -2,14 +2,16 @@
 	<button
 		class="fixed z-50 pointer bg-none w-14 h-14 bottom-28 right-3 sm:bottom-5"
 		@click="scrollUp()"
-		v-if="localScrollValueComp > 390"
+		v-show="localScrollValueComp > 390"
 	>
 		<svg
 			fill="#000000"
 			viewBox="0 0 24 24"
 			id="top-circle"
 			xmlns="http://www.w3.org/2000/svg"
-			class="icon line"
+			class="icon line w-14 h-14"
+			width="100%"
+			height="100%"
 		>
 			<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
 			<g
@@ -59,7 +61,6 @@ const scrollElement = computed(
 const scrollUp = (): void => {
 	;(scrollElement.value as HTMLElement).scrollTo({
 		top: 0,
-		behavior: 'smooth',
 	})
 }
 
@@ -75,6 +76,10 @@ button
 	align-items: center
 	justify-content: center
 	transition: transform 0.3s ease-in-out
+
+	svg
+		width: 56px
+		height: 56px
 
 	&:hover
 		transform: scale(1.1)

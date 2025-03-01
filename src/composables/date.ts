@@ -87,27 +87,40 @@ export const getCurrentWeek = () => {
 
 // для получения номера недели
 export const getWeekNumber = (date: Date): number => {
-	// получаем начало текущего учебного года проверяя на семестр
-	const semester = (date: Date): Date =>
-		date < new Date(date.getFullYear(), 1, 8)
-			? new Date(date.getFullYear(), 8, 1)
-			: new Date(date.getFullYear(), 1, 8)
+	// начало семестра
+	const semesterStart = (date: Date): Date => {
+		const year = date.getFullYear()
+		if (date.getMonth() >= 1 && date.getMonth() < 8) {
+			// если весенний семестр начинается с первого понедельника февраля
+			const febStart = new Date(year, 1, 1)
+			const dayOfWeek = febStart.getDay()
+			const firstMonday =
+				dayOfWeek === 1
+					? febStart
+					: new Date(year, 1, 1 + ((8 - dayOfWeek) % 7))
+			return firstMonday
+		} else {
+			// если осенний семестр начинается 1 сентября
+			const septStart = new Date(year, 8, 1)
+			const dayOfWeek = septStart.getDay()
+			// 1 сентября выпадает на пятницу, субботу или воскресенье? тогда сдвигаем на следующий понедельник
+			const firstMonday =
+				dayOfWeek === 1
+					? septStart
+					: new Date(year, 8, 1 + ((8 - dayOfWeek) % 7))
+			return firstMonday
+		}
+	}
 
-	const startOfYear: Date = semester(date)
-	const dayOfWeek: number = startOfYear.getDay()
+	const startOfYear = semesterStart(date)
+	const startOfFirstWeek = new Date(startOfYear)
+	const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000
 
-	// получаем разницу между днем недели и началом года получая первую неделю по стандарту ISO 8601
-	const diff: number = dayOfWeek <= 4 ? dayOfWeek - 1 : dayOfWeek - 8
-
-	// получаем начало первой недели
-	const startOfFirstWeek: Date = new Date(startOfYear)
-	// устанавливаем дату начала первой недели
-	startOfFirstWeek.setDate(startOfYear.getDate() - diff)
-
-	const millisecondsInWeek: number = 7 * 24 * 60 * 60 * 1000
-	const weekNumber: number = Math.ceil(
+	// номер недели с начала первой недели
+	const weekNumber = Math.ceil(
 		(date.getTime() - startOfFirstWeek.getTime()) / millisecondsInWeek
 	)
+
 	return weekNumber % 2 === 0 ? 2 : 1
 }
 

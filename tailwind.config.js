@@ -23,6 +23,12 @@ export default {
 			fontFamily: {
 				sans: ['Noto Sans', 'sans-serif'],
 			},
+			minWidth: {
+				'fit-content': '-webkit-fit-content',
+			},
+			minHeight: {
+				'fit-content': '-webkit-fit-content',
+			},
 		},
 	},
 }

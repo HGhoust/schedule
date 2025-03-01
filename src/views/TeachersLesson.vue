@@ -1,5 +1,4 @@
 <template>
-	{{ localSchedules }}
 	<div :class="themeStore.theme">
 		<div class="container py-5 pb-32 text-lg">
 			<h1 class="text-center text-2xl py-5">Список занятий преподавателя</h1>
@@ -53,7 +52,7 @@
 				class="teacher flex gap-2 p-3 mt-7 mx-2 rounded-3xl items-center lg:max-w-96 lg:justify-center"
 			>
 				<img
-					:src="`/src/assets/icons/${addDefaultImage}Teacher${
+					:src="`/icons/${addDefaultImage}Teacher${
 						themeStore.theme[0].toUpperCase() + themeStore.theme.slice(1)
 					}.svg`"
 					alt=""
@@ -95,7 +94,7 @@
 							"
 						>
 							<img
-								:src="`/src/assets/icons/${
+								:src="`/icons/${
 									themeStore.theme === 'light' ? 'deleteBlack' : 'deleteWhite'
 								}.svg`"
 								alt=""
@@ -184,7 +183,7 @@
 										"
 									>
 										<img
-											:src="`/src/assets/icons/${
+											:src="`/icons/${
 												themeStore.theme === 'light'
 													? 'deleteBlack'
 													: 'deleteWhite'
@@ -199,10 +198,11 @@
 										<label for="input" class="block text-base mb-2 ml-3">
 											Номер занятии
 										</label>
-										<AppInput
+										<AppSelect
 											id="input"
 											placeholder="Номер занятии"
 											v-model.number="hour.time"
+											:options="[1, 2, 3, 4, 5]"
 										/>
 									</div>
 									<div>
@@ -264,7 +264,7 @@
 				</div>
 
 				<div class="" v-else>
-					<h3 class="text-center text-xl">Список преподавателей пуст</h3>
+					<h3 class="text-center text-xl">Список занятий пуст</h3>
 				</div>
 
 				<AppAlert
@@ -433,7 +433,11 @@ const lessonSearch = computed(() => {
 	].sort((a, b) => a - b)
 
 	const typeSearch = [
-		...new Set(dataStore.schedules?.map(schedule => schedule.type)),
+		...new Set(
+			dataStore.schedules
+				?.filter(schedule => schedule.type !== '')
+				.map(schedule => schedule.type)
+		),
 	]
 
 	const weekSearch = [
@@ -561,21 +565,34 @@ const saveChanges = async (): Promise<void> => {
 
 					if (updatedDay) {
 						// обновление
-						updates[`schedules/${scheduleKey}/${dayIndex}`] = {
-							day: updatedDay.day.map(day => {
-								return {
-									day: day.day,
-									id: dayInWeek.value.findIndex(dayWeek => dayWeek === day.day),
-								}
-							}),
+						const updatedData: Record<string, any> = {
+							day: updatedDay.day.map(day => ({
+								day: day.day,
+								id: dayInWeek.value.findIndex(dayWeek => dayWeek === day.day),
+							})),
 							dayCount: updatedDay.dayCount,
-							hours: updatedDay.hours,
 							id: updatedDay.id,
 							dayId: updatedDay.dayId,
 							location: updatedDay.location,
 							type: updatedDay.type,
 							week: updatedDay.week,
 						}
+
+						// что-бы изменения сохранялись и при отсутствии hours у одного из объектов
+						if (updatedDay.hours !== undefined) {
+							updatedData.hours = updatedDay.hours.map(hour => {
+								return {
+									group: hour.group,
+									hourId: hour.hourId,
+									room: hour.room,
+									time: hour.time * 2,
+									timeEnd: hour.timeEnd,
+									timeStart: hour.timeStart,
+								}
+							})
+						}
+
+						updates[`schedules/${scheduleKey}/${dayIndex}`] = updatedData
 					}
 				})
 			})
@@ -768,7 +785,7 @@ const deleteObjectsWithMatchingId = async (
 								// ищем индекс
 								const hourIndex = day.hours.findIndex(
 									(hour: any, hourId: number) =>
-										hour.time === Number(time) && hour.hourId === hourInArg
+										hour.time / 2 === Number(time) && hour.hourId === hourInArg
 								)
 
 								if (hourIndex !== -1) {

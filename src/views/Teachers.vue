@@ -17,7 +17,7 @@
 				<AppInput
 					class="flex-1"
 					v-model="name"
-					:options="dataStore.teachers.map(teacher => teacher.name)"
+					:options="filteredSubjectName"
 					placeholder="Введите название предмета"
 					input-type="search"
 				/>
@@ -39,7 +39,7 @@
 						v-for="(subjects, subjectId) in dataStore.user?.role !== 'admin'
 							? filteredTeachersInUser
 							: filteredTeachers"
-						:key="subjectId"
+						:key="subjectId + subjects.id"
 					>
 						<button
 							type="button"
@@ -48,7 +48,7 @@
 							@click="confirmDeletion(subjects.id)"
 						>
 							<img
-								:src="`/src/assets/icons/${
+								:src="`/icons/${
 									themeStore.theme === 'light' ? 'deleteBlack' : 'deleteWhite'
 								}.svg`"
 								alt=""
@@ -58,7 +58,7 @@
 						<!-- Информация о преподавателе -->
 						<div class="grid grid-cols-1 items-center gap-3 pb-5 mt-11 lg:mt-0">
 							<img
-								:src="`/src/assets/icons/${addDefaultImage[subjectId]}Teacher${
+								:src="`/icons/${addDefaultImage[subjectId]}Teacher${
 									themeStore.theme[0].toUpperCase() + themeStore.theme.slice(1)
 								}.svg`"
 								alt=""
@@ -132,7 +132,12 @@ import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import MenuBar from '@/components/ui/MenuBar.vue'
-import { useDataStore, UseModalWindowStore, useThemeStore } from '@/stores'
+import {
+	useDataStore,
+	useFiltersStore,
+	UseModalWindowStore,
+	useThemeStore,
+} from '@/stores'
 import type { IScheduleList, ITeacherList } from '@/types/date'
 import {
 	ref as dataBaseRef,
@@ -146,6 +151,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const dataStore = useDataStore()
+const filtersStore = useFiltersStore()
 const themeStore = useThemeStore()
 const modalWindowStore = UseModalWindowStore()
 const router = useRouter()
@@ -191,7 +197,7 @@ const closeModal = () => {
 const deleteObjectsWithMatchingId = async (targetId: string) => {
 	try {
 		showModal.value = false
-
+		dataStore.isLoading = true
 		const subjectsRef = dataBaseRef(dataBase, 'subjects')
 		const subjectsSnapshot = await get(subjectsRef)
 		const subjectsData = subjectsSnapshot.val()
@@ -219,22 +225,29 @@ const deleteObjectsWithMatchingId = async (targetId: string) => {
 				console.log(`Объект удалён из "schedules": ${scheduleKey}`)
 			}
 		}
+		await dataStore.fetchTeachers()
 		console.log(`Объекты с ID "${targetId}" успешно удалены.`)
 	} catch (error) {
 		console.error('Ошибка при удалении объектов:', error)
+	} finally {
+		dataStore.isLoading = false
 	}
 }
 
 const addTeacher = async () => {
 	const newTeacherRef = dataBaseRef(dataBase, 'subjects')
 	try {
+		dataStore.isLoading = true
 		await push(newTeacherRef, {
 			teacher: '',
 			name: '',
-			id: dataStore.uniqueId,
+			id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
 		})
+		await dataStore.fetchTeachers()
 	} catch (error) {
 		console.error('Ошибка при добавлении преподавателя', error)
+	} finally {
+		dataStore.isLoading = false
 	}
 }
 
@@ -259,6 +272,14 @@ const filteredTeachersInUser = computed(() => {
 		teacher =>
 			filteredSchedulesInUser.find(schedule => schedule.id === teacher.id) ||
 			true
+	)
+})
+
+const filteredSubjectName = computed(() => {
+	return [...new Set(dataStore.teachers.map(teacher => teacher.name))].filter(
+		subjectName =>
+			!name.value ||
+			subjectName.toLocaleLowerCase().includes(name.value.toLocaleLowerCase())
 	)
 })
 

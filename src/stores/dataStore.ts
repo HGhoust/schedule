@@ -28,7 +28,6 @@ export const useDataStore = defineStore('dataStore', {
 		users: [],
 		user: null,
 		isLoading: false,
-		uniqueId: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
 	}),
 	actions: {
 		getAuthUser() {
@@ -114,7 +113,18 @@ export const useDataStore = defineStore('dataStore', {
 							schedulesList.push({
 								day: subjectsData[dataKey].day,
 								dayCount: subjectsData[dataKey].dayCount,
-								hours: subjectsData[dataKey].hours,
+								hours: subjectsData[dataKey].hours?.map(
+									(hour: IScheduleListHour) => {
+										return {
+											group: hour.group,
+											hourId: hour.hourId,
+											room: hour.room,
+											time: hour.time / 2,
+											timeEnd: hour.timeEnd,
+											timeStart: hour.timeStart,
+										}
+									}
+								),
 								id: subjectsData[dataKey].id,
 								location: subjectsData[dataKey].location,
 								type: subjectsData[dataKey].type,
@@ -124,6 +134,8 @@ export const useDataStore = defineStore('dataStore', {
 							})
 						})
 					})
+
+					console.log(schedulesList)
 
 					this.schedules = [...schedulesList]
 				} else {
@@ -204,16 +216,10 @@ export const useDataStore = defineStore('dataStore', {
 				const idToken = await user.getIdToken()
 
 				const response = await fetch(
-					`https://schedule-gh-default-rtdb.firebaseio.com/subjects.json?auth=${idToken}`,
-					{
-						method: 'GET',
-					}
+					`https://schedule-gh-default-rtdb.firebaseio.com/subjects.json?auth=${idToken}`
 				)
 				const responseSchedules = await fetch(
-					`https://schedule-gh-default-rtdb.firebaseio.com/schedules.json?auth=${idToken}`,
-					{
-						method: 'GET',
-					}
+					`https://schedule-gh-default-rtdb.firebaseio.com/schedules.json?auth=${idToken}`
 				)
 				const data = await response.json()
 				const dataSchedules = await responseSchedules.json()
@@ -248,6 +254,8 @@ export const useDataStore = defineStore('dataStore', {
 						.filter(item => item.id === data[key].id),
 				}))
 
+				console.log(result)
+
 				this.subjects = [...result]
 			} catch (error) {
 				console.error('Ошибка при загрузке данных:', error)
@@ -256,6 +264,10 @@ export const useDataStore = defineStore('dataStore', {
 	},
 
 	getters: {
+		currentDayInWeek(state: IState): number {
+			return (state.newTime.getDay() + 6) % 7
+		},
+
 		filteredSubjects: (state: IState): ISubject[] => {
 			const { groupName, teacher, groupWeek } = state.filters
 

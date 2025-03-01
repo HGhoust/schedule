@@ -1,11 +1,15 @@
 <Loader />
 <template>
-	<div class="card relative rounded-3xl" :class="themeStore.theme">
+	<div
+		class="card relative rounded-3xl"
+		:class="themeStore.theme"
+		:id="`${index}`"
+	>
 		<img
 			src="/src//assets/icons/online.svg"
 			alt=""
 			class="size-4 absolute top-6 right-6"
-			v-if="currentDayInWeek === index"
+			v-if="dataStore.currentDayInWeek === index"
 		/>
 		<div class="flex flex-col justify-center min-h-24">
 			<h2 class="text-center">{{ day }}</h2>
@@ -17,10 +21,18 @@
 				v-for="item in dataStore.getDayHours(index)"
 				:key="item.positionHour"
 			>
-				<div class="list-info flex items-center min-h-24" v-if="item.subject">
+				<div
+					class="list-info flex items-center min-h-24 py-1"
+					v-if="item.subject"
+				>
 					<span class="min-w-10">{{ item.positionHour }}</span>
 					<div class="flex flex-col flex-1">
 						<span class="">{{ resizeSubjectName(item.subject.name) }}</span>
+						<div class="flex justify-between">
+							<span class="text-xs pr-5">{{
+								item.subject.schedule?.type
+							}}</span>
+						</div>
 						<div class="flex justify-between">
 							<span class="text-xs">Преподаватель</span>
 							<span class="text-xs pr-5">{{
@@ -43,7 +55,7 @@
 							class="flex justify-between"
 							v-if="timeStartVisible(item, index)"
 						>
-							<span class="text-xs">До начала пары осталось</span>
+							<span class="text-xs">Начало через</span>
 							<span class="text-xs pr-5">
 								{{ timeStartCurrentOrNextDay(item, index) }}
 							</span>
@@ -52,7 +64,7 @@
 							class="flex justify-between"
 							v-if="timeEndVisible(item, index)"
 						>
-							<span class="text-xs">До конца пары осталось</span>
+							<span class="text-xs">Конец через</span>
 							<span class="text-xs pr-5">{{
 								timeEndCurrentOrNextDay(item, index)
 							}}</span>
@@ -77,7 +89,7 @@ import {
 } from '@/composables'
 import { useDataStore, useThemeStore } from '@/stores'
 import type { ISubject } from '@/types/date'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
 	index: {
@@ -95,8 +107,6 @@ const props = defineProps({
 })
 const themeStore = useThemeStore()
 const dataStore = useDataStore()
-// получаем номер дня недели так что-бы 0 был понедельник
-const currentDayInWeek = computed(() => (dataStore.newTime.getDay() + 6) % 7)
 
 interface IItem {
 	positionHour: string
@@ -116,16 +126,18 @@ const timeStart = (item: IItem): number => {
 const timeEndVisible = (item: IItem, idDay: number): boolean => {
 	return (
 		(timeEndCurrentOrNextDay(item, idDay) !== '00:00:00' &&
-			idDay === currentDayInWeek.value) ||
-		idDay === (currentDayInWeek.value === 6 ? 0 : currentDayInWeek.value + 1)
+			idDay === dataStore.currentDayInWeek) ||
+		idDay ===
+			(dataStore.currentDayInWeek === 6 ? 0 : dataStore.currentDayInWeek + 1)
 	)
 }
 
 const timeStartVisible = (item: IItem, idDay: number): boolean => {
 	return (
 		(timeStartCurrentOrNextDay(item, idDay) !== '00:00:00' &&
-			idDay === currentDayInWeek.value) ||
-		idDay === (currentDayInWeek.value === 6 ? 0 : currentDayInWeek.value + 1)
+			idDay === dataStore.currentDayInWeek) ||
+		idDay ===
+			(dataStore.currentDayInWeek === 6 ? 0 : dataStore.currentDayInWeek + 1)
 	)
 }
 
@@ -133,14 +145,14 @@ const timeStartCurrentOrNextDay = (item: IItem, idDay: number) => {
 	return updateScheduleTimeStart(
 		timeStart(item),
 		dataStore.newTime,
-		currentDayInWeek.value !== idDay ? true : false
+		dataStore.currentDayInWeek !== idDay ? true : false
 	)
 }
 const timeEndCurrentOrNextDay = (item: IItem, idDay: number) => {
 	return updateScheduleTimeEnd(
 		timeEnd(item),
 		dataStore.newTime,
-		currentDayInWeek.value !== idDay ? true : false
+		dataStore.currentDayInWeek !== idDay ? true : false
 	)
 }
 

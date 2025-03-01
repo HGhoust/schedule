@@ -225,7 +225,6 @@ const scrollToActiveOption = (): void => {
 	if (activeItem) {
 		activeItem.classList.add('keyboard')
 		activeItem.scrollIntoView({
-			behavior: 'smooth',
 			block: 'nearest',
 		})
 	}

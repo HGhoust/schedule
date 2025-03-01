@@ -37,14 +37,19 @@ const dataStore = useDataStore()
 
 const teachers = computed(() => {
 	const filteredSchedulesInUser = dataStore.schedules.filter(schedule =>
-		schedule.hours.find(
+		schedule.hours?.find(
 			hour =>
 				!dataStore.filters.groupName ||
 				hour.group === dataStore.filters.groupName
 		)
 	)
-	const teachers = dataStore.teachers.filter(teacher =>
-		filteredSchedulesInUser.find(schedule => teacher.id === schedule.id)
+	const teachers = dataStore.teachers.filter(
+		teacher =>
+			(filteredSchedulesInUser.find(schedule => teacher.id === schedule.id) &&
+				!dataStore.filters.teacher) ||
+			teacher.teacher
+				.toLowerCase()
+				.includes(dataStore.filters.teacher.toLowerCase())
 	)
 
 	return teachers.map(teacher => teacher.teacher)

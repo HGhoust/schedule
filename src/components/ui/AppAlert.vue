@@ -51,21 +51,30 @@ const themeStore = useThemeStore()
 	background-color: rgba(231,230,230,0.7)
 
 .wrapper
-	background-color: variables.$bgCardWhite
+	width: 100%
+	height: 100%
+	border-radius: 0
 
-@media (min-width: 500px)
 .light
 	.wrapper
 		background-color: variables.$bgCardWhite
 
-
 .dark
 	.wrapper
-		background-color: variables.$bgCardBlack
+			background-color: variables.$bgCardBlack
 
-.wrapper
-	width: 500px
-	height: 500px
-	box-shadow: 5px 5px 20px 1px #9a9999
-	border-radius: 10px
+@media (min-width: 500px)
+	.light
+		.wrapper
+			background-color: variables.$bgCardWhite
+
+	.dark
+		.wrapper
+			background-color: variables.$bgCardBlack
+
+	.wrapper
+		width: 500px
+		height: 500px
+		box-shadow: 5px 5px 20px 1px #9a9999
+		border-radius: 10px
 </style>

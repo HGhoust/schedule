@@ -2,7 +2,7 @@
 	<header class="flex items-center justify-between mb-6 mx-2">
 		<div class="flex-1 flex justify-end">
 			<div
-				class="user__card grid gap-1 w-full lg:w-[300px] h-14 min-w-min min-h-min p-4 rounded-xl"
+				class="user__card grid gap-1 w-full lg:w-[300px] min-w-min min-h-min p-4 rounded-xl"
 			>
 				<div class="user flex justify-between gap-1">
 					<h3>{{ timesOfDay }}</h3>

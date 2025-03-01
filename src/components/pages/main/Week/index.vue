@@ -10,13 +10,30 @@
 			:date="dayInf.date"
 		/>
 	</div>
+	<div class="fixed right-1 top-1/3">
+		<button
+			class="shadow-sm rounded-lg bg-[#949295] text-white p-1"
+			@click="scrollInToCurrentDay()"
+			v-if="
+				dataStore.currentDayInWeek !== 0 && dataStore.currentDayInWeek !== 1
+			"
+		>
+			Сегодня
+		</button>
+	</div>
 </template>
 
 <script setup lang="ts">
 import { getCurrentWeek } from '@/composables'
+import { useDataStore, useThemeStore } from '@/stores'
 import DayCard from './DayCard.vue'
+const dataStore = useDataStore()
+const themeStore = useThemeStore()
 
 const currentWeek = getCurrentWeek()
+const scrollInToCurrentDay = () => {
+	document.getElementById(`${dataStore.currentDayInWeek}`)?.scrollIntoView()
+}
 </script>
 
 <style lang="sass" scoped></style>

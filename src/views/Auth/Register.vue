@@ -1,5 +1,6 @@
 <template>
 	<Auth
+		class="mt-4"
 		submit-text="Зарегистрироваться"
 		submit-title="Регистрация"
 		@submit="signUp"
@@ -128,6 +129,12 @@ const signUp = async (): Promise<void> => {
 
 		if (signInMethod.length > 0) {
 			modalWindowStore.text = 'Такая почта уже зарегистрирована'
+			modalWindowStore.visible = true
+			modalWindowStore.type = 'error'
+			dataStore.isLoading = false
+			return
+		} else if (userStore.password.length < 6) {
+			modalWindowStore.text = 'Пароль должен быть больше 5 символов'
 			modalWindowStore.visible = true
 			modalWindowStore.type = 'error'
 			dataStore.isLoading = false

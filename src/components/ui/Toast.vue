@@ -4,7 +4,7 @@
 		:class="themeStore.theme === 'light' ? 'bg-white' : 'bg-black'"
 	>
 		<div class="size-12 rounded-xl">
-			<img :src="`/src/assets/icons/${type}.svg`" alt="/" />
+			<img :src="`/icons/${type}.svg`" alt="/" />
 		</div>
 		<div class="flex items-center flex-1 rounded-xl">
 			<h2

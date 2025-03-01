@@ -4,8 +4,8 @@
 		<div
 			v-if="isMenuVisible"
 			:style="menuPosition"
-			:class="themeStore.theme"
-			class="top-menu bottom-28 p-2 lg:p-3 shadow-md z-20 min-w-min rounded-3xl"
+			:class="(themeStore.theme, { 'ml-5': route.path === '/' })"
+			class="top-menu bottom-28 p-2 lg:p-3 shadow-md z-20 min-w-fit-content rounded-3xl sm:ml-0"
 		>
 			<div class="flex flex-col min-w-max">
 				<div
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 			<div
-				:class="themeStore.theme"
+				:class="(themeStore.theme, { 'left-[42%]': route.path === '/' })"
 				class="top-menu__pointer fixed -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 rotate-45 z-10"
 			></div>
 		</div>
@@ -111,15 +111,15 @@ const menuThemeOptions = ref<MenuOption[]>([
 	{
 		label: 'Темная тема',
 		action: 'dark',
-		icon: '/src/assets/icons/darkBlack.svg',
-		iconDark: '/src/assets/icons/darkWhite.svg',
+		icon: '/icons/darkBlack.svg',
+		iconDark: '/icons/darkWhite.svg',
 		visible: 'user',
 	},
 	{
 		label: 'Светлая тема',
 		action: 'light',
-		icon: '/src/assets/icons/lightBlack.svg',
-		iconDark: '/src/assets/icons/lightWhite.svg',
+		icon: '/icons/lightBlack.svg',
+		iconDark: '/icons/lightWhite.svg',
 		visible: 'user',
 	},
 ])
@@ -128,15 +128,15 @@ const menuSettingsOptions = ref<MenuOption[]>([
 	{
 		label: 'Список преподавателей',
 		action: 'teachers',
-		icon: '/src/assets/icons/womanTeacherLight.svg',
-		iconDark: '/src/assets/icons/womanTeacherDark.svg',
+		icon: '/icons/womanTeacherLight.svg',
+		iconDark: '/icons/womanTeacherDark.svg',
 		visible: 'user',
 	},
 	{
 		label: 'Список пользователей',
 		action: 'users',
-		icon: '/src/assets/icons/usersLight.svg',
-		iconDark: '/src/assets/icons/usersDark.svg',
+		icon: '/icons/usersLight.svg',
+		iconDark: '/icons/usersDark.svg',
 		visible: 'admin',
 	},
 ])
@@ -145,27 +145,27 @@ const mainActions = reactive<MainAction[]>([
 	{
 		label: 'Back',
 		action: 'back',
-		icon: '/src/assets/icons/backLight.svg',
-		iconDark: '/src/assets/icons/backDark.svg',
+		icon: '/icons/backLight.svg',
+		iconDark: '/icons/backDark.svg',
 		visible: '/',
 	},
 	{
 		label: 'Settings',
 		action: 'settings',
-		icon: '/src/assets/icons/settingsLight.svg',
-		iconDark: '/src/assets/icons/settingsDark.svg',
+		icon: '/icons/settingsLight.svg',
+		iconDark: '/icons/settingsDark.svg',
 	},
 	{
 		label: 'Theme',
 		action: 'themeSettings',
-		icon: '/src/assets/icons/themeSettingsLight.svg',
-		iconDark: '/src/assets/icons/themeSettingsDark.svg',
+		icon: '/icons/themeSettingsLight.svg',
+		iconDark: '/icons/themeSettingsDark.svg',
 	},
 	{
 		label: 'Exit',
 		action: 'exit',
-		icon: '/src/assets/icons/exitLight.svg',
-		iconDark: '/src/assets/icons/exitDark.svg',
+		icon: '/icons/exitLight.svg',
+		iconDark: '/icons/exitDark.svg',
 	},
 ])
 

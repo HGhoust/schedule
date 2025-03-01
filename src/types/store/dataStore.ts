@@ -12,6 +12,5 @@ export interface IState {
 	teachers: ITeacherList[] | []
 	users: IUser[] | []
 	user: IUser | null
-	uniqueId: string
 	isLoading: boolean
 }
