@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import Loader from './components/ui/Loader.vue'
 import ScrollButton from './components/ui/ScrollButton.vue'
 import Toast from './components/ui/Toast.vue'
@@ -28,6 +28,17 @@ const updateScroll = () => {
 	scrollValue.value = window.scrollY || document.body.scrollTop
 }
 
+watch(
+	() => themeStore.theme,
+	(newVal, oldVal) => {
+		if (newVal && oldVal) {
+			document.body.classList.add(newVal)
+			document.body.classList.remove(oldVal)
+		}
+	},
+	{ immediate: true }
+)
+
 onMounted(() => {
 	window.scrollY
 		? window.addEventListener('scroll', updateScroll)
@@ -38,6 +49,7 @@ onMounted(() => {
 	themeStore.prefersDark.addEventListener('change', themeStore.updateTheme)
 
 	savedTheme ? (themeStore.theme = savedTheme) : themeStore.updateTheme()
+	document.body.classList.add(themeStore.theme)
 })
 
 onUnmounted(() => {

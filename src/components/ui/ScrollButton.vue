@@ -61,6 +61,7 @@ const scrollElement = computed(
 const scrollUp = (): void => {
 	;(scrollElement.value as HTMLElement).scrollTo({
 		top: 0,
+		behavior: 'smooth',
 	})
 }
 

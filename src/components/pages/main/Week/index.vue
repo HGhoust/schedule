@@ -32,7 +32,9 @@ const themeStore = useThemeStore()
 
 const currentWeek = getCurrentWeek()
 const scrollInToCurrentDay = () => {
-	document.getElementById(`${dataStore.currentDayInWeek}`)?.scrollIntoView()
+	document
+		.getElementById(`${dataStore.currentDayInWeek}`)
+		?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
